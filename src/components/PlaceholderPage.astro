@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "./Button.astro";
+
+interface Props {
+  title: string;
+  note: string;
+}
+
+const { title, note } = Astro.props;
+---
+
+<Layout title={`${title} — La Luce Estetica`}>
+  <section class="mx-auto max-w-7xl px-6 py-28 sm:py-36 lg:px-8">
+    <p class="eyebrow">Demo — Coming Soon</p>
+    <h1
+      class="mt-6 font-display text-5xl font-light leading-[1.02] text-ink sm:text-7xl"
+    >
+      {title}
+    </h1>
+    <p
+      class="mt-8 max-w-xl font-sans text-base leading-relaxed text-ink/60 sm:text-lg"
+    >
+      {note}
+    </p>
+    <div class="mt-12">
+      <Button href="/" variant="outline-dark">Back to Home</Button>
+    </div>
+  </section>
+</Layout>

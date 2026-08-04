@@ -1,17 +1,277 @@
 ---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import { TREATWELL_URL } from "../consts";
+import heroImage from "../assets/bg-image.jpg";
 
+const treatments = [
+  {
+    index: "01",
+    category: "Body Treatment",
+    name: "LPG Endermologie",
+    meta: "45 MIN — €90",
+  },
+  {
+    index: "02",
+    category: "Body Sculpting",
+    name: "EMS — Electrical Muscle Stimulation",
+    meta: "30 MIN — €70",
+  },
+  {
+    index: "03",
+    category: "Microvibration",
+    name: "Endospheres Therapy",
+    meta: "50 MIN — €85",
+  },
+  {
+    index: "04",
+    category: "Lymphatic Drainage",
+    name: "Pressotherapy",
+    meta: "40 MIN — €60",
+  },
+];
+
+const marqueeItems = [
+  "LPG Endermologie",
+  "EMS Sculpting",
+  "Endospheres Therapy",
+  "Pressotherapy",
+  "Book via Treatwell",
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout headerTheme="overlay">
+  <!-- ============ HERO ============ -->
+  <section class="relative flex min-h-svh items-end overflow-hidden bg-ink">
+    <Image
+      src={heroImage}
+      alt="Client relaxing on a white treatment couch at the studio"
+      widths={[768, 1280, 1920, 2400]}
+      sizes="100vw"
+      quality={82}
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/25 to-ink/15"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div
+      class="relative mx-auto w-full max-w-7xl px-6 pb-24 pt-40 sm:pb-32 lg:px-8"
+    >
+      <p class="eyebrow text-sand" data-reveal>
+        Skincare Clinic — Placeholder Tagline
+      </p>
+      <h1
+        class="mt-6 max-w-5xl font-display text-[clamp(2.9rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.01em] text-paper"
+        data-reveal
+        style="--reveal-delay:120ms"
+      >
+        Hero Campaign <em class="italic text-sand">Headline</em> Goes Here
+      </h1>
+      <p
+        class="mt-8 max-w-xl font-sans text-base leading-relaxed text-paper/80 sm:text-lg"
+        data-reveal
+        style="--reveal-delay:220ms"
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco.
+      </p>
+      <div
+        class="mt-10 flex flex-col gap-4 sm:flex-row"
+        data-reveal
+        style="--reveal-delay:320ms"
+      >
+        <Button href={TREATWELL_URL} external variant="light">Book Now</Button>
+        <Button href="/services" variant="outline-light">
+          Explore Treatments
+        </Button>
+      </div>
+    </div>
+
+    <div
+      class="absolute bottom-8 right-8 hidden items-center gap-4 md:flex"
+      aria-hidden="true"
+    >
+      <span
+        class="font-sans text-[0.6rem] uppercase tracking-[0.3em] text-paper/60"
+      >
+        Scroll
+      </span>
+      <span class="h-px w-16 animate-cue bg-paper/60"></span>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <section
+    class="overflow-hidden border-b border-ink/10 bg-paper py-6"
+    aria-label="Treatment highlights"
+  >
+    <div class="flex w-max animate-marquee items-center">
+      {
+        [0, 1].map((copy) => (
+          <ul class="flex items-center" aria-hidden={copy === 1}>
+            {marqueeItems.map((item) => (
+              <li class="flex items-center whitespace-nowrap">
+                <span class="px-8 font-display text-2xl font-light italic text-ink/80">
+                  {item}
+                </span>
+                <span class="text-champagne" aria-hidden="true">
+                  ✳
+                </span>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ============ FEATURED TREATMENTS ============ -->
+  <section class="border-b border-ink/10">
+    <div class="mx-auto max-w-7xl px-6 py-24 sm:py-36 lg:px-8">
+      <div class="mb-14 flex flex-wrap items-end justify-between gap-6" data-reveal>
+        <div>
+          <p class="eyebrow">Selected Treatments</p>
+          <h2
+            class="mt-4 font-display text-4xl font-light leading-[1.05] text-ink sm:text-6xl"
+          >
+            Featured <em class="italic text-champagne">Treatments</em>
+          </h2>
+        </div>
+        <p
+          class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums"
+        >
+          01 — 04
+        </p>
+      </div>
+
+      <div class="border-b border-ink/15">
+        {
+          treatments.map((t, i) => (
+            <a
+              href="/services"
+              class="group grid grid-cols-1 gap-3 border-t border-ink/15 py-8 transition-colors duration-300 hover:bg-blush sm:py-10 md:grid-cols-12 md:items-baseline md:gap-4"
+              data-reveal
+              style={`--reveal-delay:${i * 80}ms`}
+            >
+              <span class="font-sans text-xs uppercase tracking-[0.22em] text-champagne md:col-span-3 md:pl-4">
+                {t.index} / {t.category}
+              </span>
+              <span class="font-display text-2xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-3xl md:col-span-6">
+                {t.name}
+                <span
+                  class="ml-3 inline-block text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  aria-hidden="true"
+                >
+                  &nearr;
+                </span>
+              </span>
+              <span class="font-sans text-sm tabular-nums text-ink/50 md:col-span-3 md:pr-4 md:text-right">
+                {t.meta}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="mt-12" data-reveal>
+        <a
+          href="/services"
+          class="inline-flex items-center gap-3 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink underline decoration-sand underline-offset-8 transition-colors hover:decoration-champagne"
+        >
+          View All Treatments <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STUDIO TEASER ============ -->
+  <section class="border-b border-ink/10 bg-blush">
+    <div
+      class="mx-auto grid max-w-7xl gap-12 px-6 py-24 sm:py-36 md:grid-cols-12 lg:px-8"
+    >
+      <div class="md:col-span-4" data-reveal>
+        <p class="eyebrow">The Studio</p>
+        <h2
+          class="mt-4 font-display text-4xl font-light leading-[1.05] text-ink sm:text-5xl"
+        >
+          The <em class="italic text-champagne">Studio</em>
+        </h2>
+      </div>
+      <div class="md:col-span-8" data-reveal style="--reveal-delay:120ms">
+        <a href="/studio" class="group block">
+          <div
+            class="relative aspect-[4/3] w-full border border-sand bg-cream transition-colors duration-300 group-hover:bg-paper sm:aspect-[16/9]"
+          >
+            <span
+              class="absolute left-3 top-3 h-3 w-3 border-l border-t border-champagne"
+              aria-hidden="true"></span>
+            <span
+              class="absolute right-3 top-3 h-3 w-3 border-r border-t border-champagne"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-3 left-3 h-3 w-3 border-b border-l border-champagne"
+              aria-hidden="true"></span>
+            <span
+              class="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-champagne"
+              aria-hidden="true"></span>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span
+                class="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne"
+              >
+                Studio photography — to be added
+              </span>
+            </div>
+          </div>
+          <div
+            class="mt-8 grid grid-cols-1 items-baseline gap-4 md:grid-cols-12"
+          >
+            <p
+              class="font-sans text-base leading-relaxed text-ink/70 sm:text-lg md:col-span-8"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit — a short
+              teaser line about the clinic space, its atmosphere, and
+              medical-grade technology.
+            </p>
+            <span
+              class="inline-flex items-center gap-3 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink underline decoration-sand underline-offset-8 transition-colors group-hover:decoration-champagne md:col-span-4 md:justify-self-end"
+            >
+              Discover the Studio <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOOKING BANNER ============ -->
+  <section class="border-t-2 border-champagne/40 bg-ink text-paper">
+    <div class="mx-auto max-w-7xl px-6 py-24 sm:py-36 lg:px-8">
+      <div class="max-w-3xl" data-reveal>
+        <p class="eyebrow">Appointments via Treatwell</p>
+        <h2
+          class="mt-6 font-display text-[clamp(2.25rem,5.5vw,4.5rem)] font-light leading-[1.05]"
+        >
+          Booking Banner <em class="italic text-sand">Headline</em> Goes Here
+        </h2>
+        <p
+          class="mt-8 max-w-xl font-sans text-base leading-relaxed text-paper/70 sm:text-lg"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Reserve your
+          treatment in a few clicks through our Treatwell listing.
+        </p>
+        <div class="mt-10">
+          <Button href={TREATWELL_URL} external variant="light">
+            Book Appointment
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

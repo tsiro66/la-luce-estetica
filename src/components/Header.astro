@@ -1,0 +1,300 @@
+---
+import { NAV_LINKS, TREATWELL_URL } from "../consts";
+import Button from "./Button.astro";
+
+interface Props {
+  theme?: "overlay" | "solid";
+}
+
+const { theme = "solid" } = Astro.props;
+
+const leftLinks = NAV_LINKS.slice(0, 2);
+const rightLinks = NAV_LINKS.slice(2);
+---
+
+<header id="site-header" data-theme={theme} class="fixed inset-x-0 top-0 z-50">
+  <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
+    <!-- Desktop: split nav with centered wordmark -->
+    <nav
+      aria-label="Primary"
+      class="hidden items-center gap-12 md:grid md:grid-cols-[1fr_auto_1fr] lg:gap-16"
+    >
+      <div class="flex items-center justify-end gap-10">
+        {
+          leftLinks.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link font-sans text-xs font-medium uppercase tracking-[0.2em]"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <a
+        href="/"
+        aria-label="La Luce Estetica"
+        class="flex flex-col items-center leading-none"
+      >
+        <span class="whitespace-nowrap font-display text-3xl tracking-wide">
+          La Luce
+        </span>
+        <span
+          aria-hidden="true"
+          class="mt-2 flex w-full justify-between font-sans text-[0.68rem] font-medium uppercase opacity-70"
+        >
+          <span>E</span><span>s</span><span>t</span><span>e</span><span>t</span
+          ><span>i</span><span>c</span><span>a</span>
+        </span>
+      </a>
+
+      <div class="flex items-center justify-start gap-10">
+        {
+          rightLinks.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link font-sans text-xs font-medium uppercase tracking-[0.2em]"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <span class="h-3.5 w-px bg-current opacity-25" aria-hidden="true"
+        ></span>
+        <a
+          href={TREATWELL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link book-link font-sans text-xs font-medium uppercase tracking-[0.2em]"
+        >
+          Book Now <span class="arrow" aria-hidden="true">&nearr;</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Mobile: logo + menu toggle -->
+    <div class="flex items-center justify-between md:hidden">
+      <a href="/" class="font-display text-lg tracking-wide">
+        La Luce Estetica
+      </a>
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="nav-link cursor-pointer font-sans text-xs font-medium uppercase tracking-[0.2em]"
+      >
+        <span data-label>Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" aria-hidden="true">
+  <nav class="flex h-full flex-col justify-center px-8" aria-label="Mobile">
+    {
+      NAV_LINKS.map((link, i) => (
+        <a
+          href={link.href}
+          class="mobile-link flex items-baseline gap-4 border-b border-paper/10 py-5"
+        >
+          <span class="font-sans text-xs tabular-nums text-champagne">
+            0{i + 1}
+          </span>
+          <span class="font-display text-4xl font-light">{link.label}</span>
+        </a>
+      ))
+    }
+    <div class="mobile-link pt-10">
+      <Button href={TREATWELL_URL} external variant="light">
+        Book Appointment
+      </Button>
+    </div>
+  </nav>
+</div>
+
+<style>
+  #site-header {
+    --header-fg: var(--color-paper);
+    color: var(--header-fg);
+    transition:
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  #site-header[data-hidden] {
+    transform: translateY(-100%);
+  }
+
+  /* --- Links --- */
+
+  .nav-link {
+    position: relative;
+    color: var(--header-fg);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 1px;
+    background-color: var(--color-champagne);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .book-link {
+    text-decoration: underline;
+    text-decoration-color: color-mix(
+      in oklab,
+      var(--color-champagne) 55%,
+      transparent
+    );
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: text-decoration-color 0.3s ease;
+  }
+
+  .book-link::after {
+    display: none;
+  }
+
+  .book-link:hover {
+    text-decoration-color: var(--color-champagne);
+  }
+
+  .book-link .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .book-link:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* --- Header states --- */
+
+  #site-header[data-theme="solid"],
+  #site-header[data-scrolled] {
+    --header-fg: var(--color-ink);
+    background-color: color-mix(in oklab, var(--color-paper) 90%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid
+      color-mix(in oklab, var(--color-ink) 8%, transparent);
+  }
+
+  #site-header[data-menu-open] {
+    --header-fg: var(--color-paper);
+    background-color: transparent;
+    border-bottom-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* --- Mobile menu --- */
+
+  #mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.45s ease,
+      visibility 0.45s ease;
+  }
+
+  #mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #mobile-menu .mobile-link {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #mobile-menu.is-open .mobile-link {
+    opacity: 1;
+    transform: none;
+  }
+
+  #mobile-menu.is-open .mobile-link:nth-child(2) {
+    transition-delay: 60ms;
+  }
+  #mobile-menu.is-open .mobile-link:nth-child(3) {
+    transition-delay: 120ms;
+  }
+  #mobile-menu.is-open .mobile-link:nth-child(4) {
+    transition-delay: 180ms;
+  }
+  #mobile-menu.is-open .mobile-link:nth-child(5) {
+    transition-delay: 240ms;
+  }
+</style>
+
+<script>
+  const header = document.getElementById("site-header");
+  const toggle = document.getElementById("menu-toggle");
+  const label = toggle?.querySelector("[data-label]");
+  const menu = document.getElementById("mobile-menu");
+
+  let lastY = window.scrollY;
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    header?.toggleAttribute("data-scrolled", y > 24);
+
+    const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
+    if (!menuOpen) {
+      if (y > lastY && y > 140) {
+        header?.setAttribute("data-hidden", "");
+      } else if (y < lastY) {
+        header?.removeAttribute("data-hidden");
+      }
+    }
+    lastY = y;
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  function setMenu(open: boolean) {
+    toggle?.setAttribute("aria-expanded", String(open));
+    menu?.classList.toggle("is-open", open);
+    menu?.setAttribute("aria-hidden", String(!open));
+    header?.toggleAttribute("data-menu-open", open);
+    if (open) header?.removeAttribute("data-hidden");
+    document.body.classList.toggle("overflow-hidden", open);
+    if (label) label.textContent = open ? "Close" : "Menu";
+  }
+
+  toggle?.addEventListener("click", () =>
+    setMenu(toggle.getAttribute("aria-expanded") !== "true"),
+  );
+
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      toggle?.getAttribute("aria-expanded") === "true"
+    ) {
+      setMenu(false);
+    }
+  });
+</script>
