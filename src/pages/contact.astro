@@ -1,8 +1,8 @@
 ---
 import PlaceholderPage from "../components/PlaceholderPage.astro";
+import pages from "../data/pages.json";
+
+const page = pages.contact;
 ---
 
-<PlaceholderPage
-  title="Contact"
-  note="Contact details, opening hours, directions, and a booking link will live on this page."
-/>
+<PlaceholderPage title={page.title} note={page.note} />

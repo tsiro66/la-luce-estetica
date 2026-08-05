@@ -1,5 +1,5 @@
 ---
-import { NAV_LINKS, TREATWELL_URL } from "../consts";
+import site from "../data/site.json";
 import Button from "./Button.astro";
 
 interface Props {
@@ -8,8 +8,9 @@ interface Props {
 
 const { theme = "solid" } = Astro.props;
 
-const leftLinks = NAV_LINKS.slice(0, 2);
-const rightLinks = NAV_LINKS.slice(2);
+const leftLinks = site.nav.slice(0, 2);
+const rightLinks = site.nav.slice(2);
+const subLetters = site.wordmark.sub.split("");
 ---
 
 <header id="site-header" data-theme={theme} class="fixed inset-x-0 top-0 z-50">
@@ -38,14 +39,13 @@ const rightLinks = NAV_LINKS.slice(2);
         class="flex flex-col items-center leading-none"
       >
         <span class="whitespace-nowrap font-display text-3xl tracking-wide">
-          La Luce
+          {site.wordmark.main}
         </span>
         <span
           aria-hidden="true"
           class="mt-2 flex w-full justify-between font-sans text-[0.68rem] font-medium uppercase opacity-70"
         >
-          <span>E</span><span>s</span><span>t</span><span>e</span><span>t</span
-          ><span>i</span><span>c</span><span>a</span>
+          {subLetters.map((letter) => <span>{letter}</span>)}
         </span>
       </a>
 
@@ -63,12 +63,12 @@ const rightLinks = NAV_LINKS.slice(2);
         <span class="h-3.5 w-px bg-current opacity-25" aria-hidden="true"
         ></span>
         <a
-          href={TREATWELL_URL}
+          href={site.treatwellUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="nav-link book-link font-sans text-xs font-medium uppercase tracking-[0.2em]"
         >
-          Book Now <span class="arrow" aria-hidden="true">&nearr;</span>
+          {site.bookCta} <span class="arrow" aria-hidden="true">&nearr;</span>
         </a>
       </div>
     </nav>
@@ -76,7 +76,7 @@ const rightLinks = NAV_LINKS.slice(2);
     <!-- Mobile: logo + menu toggle -->
     <div class="flex items-center justify-between md:hidden">
       <a href="/" class="font-display text-lg tracking-wide">
-        La Luce Estetica
+        {site.siteName}
       </a>
       <button
         id="menu-toggle"
@@ -94,7 +94,7 @@ const rightLinks = NAV_LINKS.slice(2);
 <div id="mobile-menu" aria-hidden="true">
   <nav class="flex h-full flex-col justify-center px-8" aria-label="Mobile">
     {
-      NAV_LINKS.map((link, i) => (
+      site.nav.map((link, i) => (
         <a
           href={link.href}
           class="mobile-link flex items-baseline gap-4 border-b border-paper/10 py-5"
@@ -107,8 +107,8 @@ const rightLinks = NAV_LINKS.slice(2);
       ))
     }
     <div class="mobile-link pt-10">
-      <Button href={TREATWELL_URL} external variant="light">
-        Book Appointment
+      <Button href={site.treatwellUrl} external variant="light">
+        {site.mobileBookCta}
       </Button>
     </div>
   </nav>

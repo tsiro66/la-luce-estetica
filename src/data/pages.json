@@ -1,0 +1,18 @@
+{
+  "services": {
+    "title": "Services",
+    "note": "The full treatment menu with descriptions, durations, and pricing will live on this page."
+  },
+  "studio": {
+    "title": "Studio",
+    "note": "Photography and a short story about the clinic space and its equipment will live on this page."
+  },
+  "faq": {
+    "title": "FAQ",
+    "note": "Answers to common questions about treatments, preparation, and booking will live on this page."
+  },
+  "contact": {
+    "title": "Contact",
+    "note": "Contact details, opening hours, directions, and a booking link will live on this page."
+  }
+}

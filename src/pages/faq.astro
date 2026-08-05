@@ -1,8 +1,8 @@
 ---
 import PlaceholderPage from "../components/PlaceholderPage.astro";
+import pages from "../data/pages.json";
+
+const page = pages.faq;
 ---
 
-<PlaceholderPage
-  title="FAQ"
-  note="Answers to common questions about treatments, preparation, and booking will live on this page."
-/>
+<PlaceholderPage title={page.title} note={page.note} />

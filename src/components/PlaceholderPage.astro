@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Button from "./Button.astro";
+import site from "../data/site.json";
 
 interface Props {
   title: string;
@@ -10,9 +11,9 @@ interface Props {
 const { title, note } = Astro.props;
 ---
 
-<Layout title={`${title} — La Luce Estetica`}>
+<Layout title={`${title} — ${site.siteName}`}>
   <section class="mx-auto max-w-7xl px-6 py-28 sm:py-36 lg:px-8">
-    <p class="eyebrow">Demo — Coming Soon</p>
+    <p class="eyebrow">{site.comingSoonLabel}</p>
     <h1
       class="mt-6 font-display text-5xl font-light leading-[1.02] text-ink sm:text-7xl"
     >
@@ -24,7 +25,7 @@ const { title, note } = Astro.props;
       {note}
     </p>
     <div class="mt-12">
-      <Button href="/" variant="outline-dark">Back to Home</Button>
+      <Button href="/" variant="outline-dark">{site.backHomeLabel}</Button>
     </div>
   </section>
 </Layout>

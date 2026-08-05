@@ -1,0 +1,43 @@
+{
+  "hero": {
+    "eyebrow": "Skincare Clinic — Placeholder Tagline",
+    "titleStart": "Hero Campaign",
+    "titleAccent": "Headline",
+    "titleEnd": "Goes Here",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    "primaryCta": "Book Now",
+    "secondaryCta": "Explore Treatments",
+    "scrollLabel": "Scroll",
+    "image": ""
+  },
+  "marquee": [
+    "LPG Endermologie",
+    "EMS Sculpting",
+    "Endospheres Therapy",
+    "Pressotherapy",
+    "Book via Treatwell"
+  ],
+  "featured": {
+    "eyebrow": "Selected Treatments",
+    "titleStart": "Featured",
+    "titleAccent": "Treatments",
+    "cta": "View All Treatments"
+  },
+  "studioTeaser": {
+    "eyebrow": "The Studio",
+    "titleStart": "The",
+    "titleAccent": "Studio",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit — a short teaser line about the clinic space, its atmosphere, and medical-grade technology.",
+    "cta": "Discover the Studio",
+    "image": "",
+    "imagePlaceholder": "Studio photography — to be added"
+  },
+  "booking": {
+    "eyebrow": "Appointments via Treatwell",
+    "titleStart": "Booking Banner",
+    "titleAccent": "Headline",
+    "titleEnd": "Goes Here",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Reserve your treatment in a few clicks through our Treatwell listing.",
+    "cta": "Book Appointment"
+  }
+}

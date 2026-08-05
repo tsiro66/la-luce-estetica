@@ -1,59 +1,46 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
-import { TREATWELL_URL } from "../consts";
+import site from "../data/site.json";
+import home from "../data/home.json";
 import heroImage from "../assets/bg-image.jpg";
 
-const treatments = [
-  {
-    index: "01",
-    category: "Body Treatment",
-    name: "LPG Endermologie",
-    meta: "45 MIN — €90",
-  },
-  {
-    index: "02",
-    category: "Body Sculpting",
-    name: "EMS — Electrical Muscle Stimulation",
-    meta: "30 MIN — €70",
-  },
-  {
-    index: "03",
-    category: "Microvibration",
-    name: "Endospheres Therapy",
-    meta: "50 MIN — €85",
-  },
-  {
-    index: "04",
-    category: "Lymphatic Drainage",
-    name: "Pressotherapy",
-    meta: "40 MIN — €60",
-  },
-];
+const { hero, marquee, featured, studioTeaser, booking } = home;
 
-const marqueeItems = [
-  "LPG Endermologie",
-  "EMS Sculpting",
-  "Endospheres Therapy",
-  "Pressotherapy",
-  "Book via Treatwell",
-];
+const treatments = (
+  await getCollection("treatments", ({ data }) => data.featured)
+).sort((a, b) => a.data.order - b.data.order);
+
+const pad = (n: number) => String(n).padStart(2, "0");
 ---
 
 <Layout headerTheme="overlay">
   <!-- ============ HERO ============ -->
   <section class="relative flex min-h-svh items-end overflow-hidden bg-ink">
-    <Image
-      src={heroImage}
-      alt="Client relaxing on a white treatment couch at the studio"
-      widths={[768, 1280, 1920, 2400]}
-      sizes="100vw"
-      quality={82}
-      loading="eager"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover"
-    />
+    {
+      hero.image ? (
+        <img
+          src={hero.image}
+          alt="Studio hero image"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <Image
+          src={heroImage}
+          alt="Client relaxing on a white treatment couch at the studio"
+          widths={[768, 1280, 1920, 2400]}
+          sizes="100vw"
+          quality={82}
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      )
+    }
     <div
       class="absolute inset-0 bg-linear-to-t from-ink/20 via-ink/30 to-ink/40"
       aria-hidden="true"
@@ -64,32 +51,33 @@ const marqueeItems = [
       class="relative mx-auto w-full max-w-7xl px-6 pb-24 pt-40 sm:pb-32 lg:px-8"
     >
       <p class="eyebrow text-sand" data-reveal>
-        Skincare Clinic — Placeholder Tagline
+        {hero.eyebrow}
       </p>
       <h1
         class="mt-6 max-w-5xl font-display text-[clamp(2.9rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.01em] text-paper"
         data-reveal
         style="--reveal-delay:120ms"
       >
-        Hero Campaign <em class="italic text-sand">Headline</em> Goes Here
+        {hero.titleStart} <em class="italic text-sand">{hero.titleAccent}</em
+        > {hero.titleEnd}
       </h1>
       <p
         class="mt-8 max-w-xl font-sans text-base leading-relaxed text-paper/80 sm:text-lg"
         data-reveal
         style="--reveal-delay:220ms"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco.
+        {hero.description}
       </p>
       <div
         class="mt-10 flex flex-col gap-4 sm:flex-row"
         data-reveal
         style="--reveal-delay:320ms"
       >
-        <Button href={TREATWELL_URL} external variant="light">Book Now</Button>
+        <Button href={site.treatwellUrl} external variant="light">
+          {hero.primaryCta}
+        </Button>
         <Button href="/services" variant="outline-light">
-          Explore Treatments
+          {hero.secondaryCta}
         </Button>
       </div>
     </div>
@@ -101,7 +89,7 @@ const marqueeItems = [
       <span
         class="font-sans text-[0.6rem] uppercase tracking-[0.3em] text-paper/60"
       >
-        Scroll
+        {hero.scrollLabel}
       </span>
       <span class="h-px w-16 animate-cue bg-paper/60"></span>
     </div>
@@ -116,7 +104,7 @@ const marqueeItems = [
       {
         [0, 1].map((copy) => (
           <ul class="flex items-center" aria-hidden={copy === 1}>
-            {marqueeItems.map((item) => (
+            {marquee.map((item) => (
               <li class="flex items-center whitespace-nowrap">
                 <span class="px-8 font-display text-2xl font-light italic text-ink/80">
                   {item}
@@ -140,17 +128,18 @@ const marqueeItems = [
         data-reveal
       >
         <div>
-          <p class="eyebrow">Selected Treatments</p>
+          <p class="eyebrow">{featured.eyebrow}</p>
           <h2
             class="mt-4 font-display text-4xl font-light leading-[1.05] text-ink sm:text-6xl"
           >
-            Featured <em class="italic text-champagne">Treatments</em>
+            {featured.titleStart}
+            <em class="italic text-champagne">{featured.titleAccent}</em>
           </h2>
         </div>
         <p
           class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums"
         >
-          01 — 04
+          {pad(1)} — {pad(treatments.length)}
         </p>
       </div>
 
@@ -164,10 +153,10 @@ const marqueeItems = [
               style={`--reveal-delay:${i * 80}ms`}
             >
               <span class="font-sans text-xs uppercase tracking-[0.22em] text-champagne md:col-span-3 md:pl-4">
-                {t.index} / {t.category}
+                {pad(i + 1)} / {t.data.category}
               </span>
               <span class="font-display text-2xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-3xl md:col-span-6">
-                {t.name}
+                {t.data.title}
                 <span
                   class="ml-3 inline-block text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   aria-hidden="true"
@@ -175,8 +164,8 @@ const marqueeItems = [
                   &nearr;
                 </span>
               </span>
-              <span class="font-sans text-sm tabular-nums text-ink/50 md:col-span-3 md:pr-4 md:text-right">
-                {t.meta}
+              <span class="font-sans text-sm uppercase tabular-nums text-ink/50 md:col-span-3 md:pr-4 md:text-right">
+                {t.data.duration} — €{t.data.price}
               </span>
             </a>
           ))
@@ -188,7 +177,7 @@ const marqueeItems = [
           href="/services"
           class="inline-flex items-center gap-3 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink underline decoration-sand underline-offset-8 transition-colors hover:decoration-champagne"
         >
-          View All Treatments <span aria-hidden="true">&rarr;</span>
+          {featured.cta} <span aria-hidden="true">&rarr;</span>
         </a>
       </div>
     </div>
@@ -200,11 +189,12 @@ const marqueeItems = [
       class="mx-auto grid max-w-7xl gap-12 px-6 py-24 sm:py-36 md:grid-cols-12 lg:px-8"
     >
       <div class="md:col-span-4" data-reveal>
-        <p class="eyebrow">The Studio</p>
+        <p class="eyebrow">{studioTeaser.eyebrow}</p>
         <h2
           class="mt-4 font-display text-4xl font-light leading-[1.05] text-ink sm:text-5xl"
         >
-          The <em class="italic text-champagne">Studio</em>
+          {studioTeaser.titleStart}
+          <em class="italic text-champagne">{studioTeaser.titleAccent}</em>
         </h2>
       </div>
       <div class="md:col-span-8" data-reveal style="--reveal-delay:120ms">
@@ -224,13 +214,21 @@ const marqueeItems = [
             <span
               class="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-champagne"
               aria-hidden="true"></span>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span
-                class="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne"
-              >
-                Studio photography — to be added
-              </span>
-            </div>
+            {
+              studioTeaser.image ? (
+                <img
+                  src={studioTeaser.image}
+                  alt="The studio interior"
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <span class="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne">
+                    {studioTeaser.imagePlaceholder}
+                  </span>
+                </div>
+              )
+            }
           </div>
           <div
             class="mt-8 grid grid-cols-1 items-baseline gap-4 md:grid-cols-12"
@@ -238,14 +236,12 @@ const marqueeItems = [
             <p
               class="font-sans text-base leading-relaxed text-ink/70 sm:text-lg md:col-span-8"
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit — a short
-              teaser line about the clinic space, its atmosphere, and
-              medical-grade technology.
+              {studioTeaser.description}
             </p>
             <span
               class="inline-flex items-center gap-3 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink underline decoration-sand underline-offset-8 transition-colors group-hover:decoration-champagne md:col-span-4 md:justify-self-end"
             >
-              Discover the Studio <span aria-hidden="true">&rarr;</span>
+              {studioTeaser.cta} <span aria-hidden="true">&rarr;</span>
             </span>
           </div>
         </a>
@@ -257,21 +253,22 @@ const marqueeItems = [
   <section class="border-t-2 border-champagne/40 bg-ink text-paper">
     <div class="mx-auto max-w-7xl px-6 py-24 sm:py-36 lg:px-8">
       <div class="max-w-3xl" data-reveal>
-        <p class="eyebrow">Appointments via Treatwell</p>
+        <p class="eyebrow">{booking.eyebrow}</p>
         <h2
           class="mt-6 font-display text-[clamp(2.25rem,5.5vw,4.5rem)] font-light leading-[1.05]"
         >
-          Booking Banner <em class="italic text-sand">Headline</em> Goes Here
+          {booking.titleStart} <em class="italic text-sand">
+            {booking.titleAccent}
+          </em> {booking.titleEnd}
         </h2>
         <p
           class="mt-8 max-w-xl font-sans text-base leading-relaxed text-paper/70 sm:text-lg"
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Reserve your
-          treatment in a few clicks through our Treatwell listing.
+          {booking.description}
         </p>
         <div class="mt-10">
-          <Button href={TREATWELL_URL} external variant="light">
-            Book Appointment
+          <Button href={site.treatwellUrl} external variant="light">
+            {booking.cta}
           </Button>
         </div>
       </div>

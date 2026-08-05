@@ -1,0 +1,297 @@
+# PagesCMS configuration — https://pagescms.org
+# Sign in at https://app.pagescms.org with GitHub and select this repo + branch to edit content.
+# Changes are committed directly to the branch; your deployment rebuilds on push.
+
+media:
+  input: public/uploads
+  output: /uploads
+  extensions: [avif, gif, jpg, jpeg, png, svg, webp]
+
+content:
+  # ---------- Global settings (header, footer, nav, SEO) ----------
+  - name: site
+    label: Site Settings
+    icon: ⚙️
+    description: Global content shared across every page — branding, navigation, footer, booking links.
+    type: data
+    path: src/data/site.json
+    fields:
+      - name: siteName
+        label: Site name
+        type: string
+        required: true
+        help: Used in the browser tab, mobile menu and footer.
+      - name: wordmark
+        label: Header wordmark
+        type: object
+        fields:
+          - name: main
+            label: Main line (e.g. "La Luce")
+            type: string
+            required: true
+          - name: sub
+            label: Sub line, letter-spaced (e.g. "Estetica")
+            type: string
+            required: true
+      - name: treatwellUrl
+        label: Treatwell booking URL
+        type: string
+        required: true
+        help: All "Book" buttons point here.
+      - name: bookCta
+        label: Header booking button label
+        type: string
+        default: Book Now
+      - name: mobileBookCta
+        label: Mobile menu booking button label
+        type: string
+        default: Book Appointment
+      - name: backHomeLabel
+        label: '"Back to Home" button label'
+        type: string
+        default: Back to Home
+      - name: comingSoonLabel
+        label: Placeholder pages eyebrow label
+        type: string
+        default: Demo — Coming Soon
+      - name: seo
+        label: Default SEO
+        type: object
+        fields:
+          - name: defaultTitle
+            label: Default page title
+            type: string
+          - name: defaultDescription
+            label: Default meta description
+            type: text
+      - name: nav
+        label: Navigation links
+        type: list
+        fields:
+          - name: label
+            type: string
+          - name: href
+            label: Path
+            type: string
+            help: "Internal pages: /services, /studio, /faq, /contact"
+      - name: footer
+        type: object
+        fields:
+          - name: tagline
+            label: Footer tagline
+            type: text
+          - name: socials
+            type: list
+            fields:
+              - name: label
+                type: string
+              - name: href
+                label: URL
+                type: string
+          - name: address
+            type: object
+            fields:
+              - name: street
+                type: string
+              - name: city
+                type: string
+          - name: email
+            type: string
+          - name: phone
+            type: string
+            help: "Displayed as-is; the tel: link is generated automatically."
+          - name: hours
+            label: Opening hours
+            type: list
+            fields:
+              - name: days
+                type: string
+              - name: time
+                type: string
+          - name: bookLabel
+            label: '"Book via Treatwell" link label'
+            type: string
+          - name: copyright
+            label: Copyright name
+            type: string
+          - name: note
+            label: Bottom bar note
+            type: string
+
+  # ---------- Home page ----------
+  - name: home
+    label: Home Page
+    icon: 🏠
+    description: All copy on the homepage — hero, marquee, featured treatments intro, studio teaser and booking banner.
+    type: data
+    path: src/data/home.json
+    fields:
+      - name: hero
+        label: Hero
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow / tagline
+            type: string
+          - name: titleStart
+            label: Headline — before accent
+            type: string
+          - name: titleAccent
+            label: Headline — italic accent
+            type: string
+          - name: titleEnd
+            label: Headline — after accent
+            type: string
+          - name: description
+            type: text
+          - name: primaryCta
+            label: Primary button label (books via Treatwell)
+            type: string
+          - name: secondaryCta
+            label: Secondary button label (goes to Services)
+            type: string
+          - name: scrollLabel
+            label: Scroll cue text
+            type: string
+          - name: image
+            label: Background image
+            type: image
+            help: Leave empty to keep the built-in default photo.
+      - name: marquee
+        label: Scrolling marquee items
+        type: list
+        field:
+          name: item
+          type: string
+      - name: featured
+        label: Featured treatments section
+        type: object
+        fields:
+          - name: eyebrow
+            type: string
+          - name: titleStart
+            label: Heading — before accent
+            type: string
+          - name: titleAccent
+            label: Heading — italic accent
+            type: string
+          - name: cta
+            label: '"View all" link label'
+            type: string
+      - name: studioTeaser
+        label: Studio teaser section
+        type: object
+        fields:
+          - name: eyebrow
+            type: string
+          - name: titleStart
+            label: Heading — before accent
+            type: string
+          - name: titleAccent
+            label: Heading — italic accent
+            type: string
+          - name: description
+            type: text
+          - name: cta
+            label: Link label
+            type: string
+          - name: image
+            type: image
+            help: Leave empty to show the placeholder frame instead.
+          - name: imagePlaceholder
+            label: Placeholder text (shown while no image is set)
+            type: string
+      - name: booking
+        label: Booking banner
+        type: object
+        fields:
+          - name: eyebrow
+            type: string
+          - name: titleStart
+            label: Headline — before accent
+            type: string
+          - name: titleAccent
+            label: Headline — italic accent
+            type: string
+          - name: titleEnd
+            label: Headline — after accent
+            type: string
+          - name: description
+            type: text
+          - name: cta
+            label: Button label (books via Treatwell)
+            type: string
+
+  # ---------- Placeholder pages ----------
+  - name: pages
+    label: Placeholder Pages
+    icon: 📄
+    description: Titles and notes for the Services, Studio, FAQ and Contact placeholder pages.
+    type: data
+    path: src/data/pages.json
+    fields:
+      - name: services
+        label: Services page
+        type: object
+        fields:
+          - name: title
+            type: string
+          - name: note
+            type: text
+      - name: studio
+        label: Studio page
+        type: object
+        fields:
+          - name: title
+            type: string
+          - name: note
+            type: text
+      - name: faq
+        label: FAQ page
+        type: object
+        fields:
+          - name: title
+            type: string
+          - name: note
+            type: text
+      - name: contact
+        label: Contact page
+        type: object
+        fields:
+          - name: title
+            type: string
+          - name: note
+            type: text
+
+  # ---------- Treatments ----------
+  - name: treatments
+    label: Treatments
+    icon: 💆
+    description: Treatment menu entries. Featured ones appear on the homepage; all appear on the Services page.
+    type: content
+    path: src/content/treatments
+    fields:
+      - name: title
+        label: Treatment name
+        type: string
+        required: true
+      - name: category
+        label: Category / eyebrow
+        type: string
+        help: Shown next to the number, e.g. "Body Treatment".
+      - name: duration
+        type: string
+        help: "e.g. 45 min"
+      - name: price
+        type: number
+        help: In EUR, without the € sign.
+      - name: order
+        type: number
+        help: Controls the position in listings (1 = first).
+      - name: featured
+        type: boolean
+        default: true
+        help: Featured treatments are shown on the homepage.
+      - name: body
+        label: Description
+        type: richtext

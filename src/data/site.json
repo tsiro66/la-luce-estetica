@@ -1,0 +1,43 @@
+{
+  "siteName": "La Luce Estetica",
+  "wordmark": {
+    "main": "La Luce",
+    "sub": "Estetica"
+  },
+  "treatwellUrl": "https://www.treatwell.co.uk/",
+  "bookCta": "Book Now",
+  "mobileBookCta": "Book Appointment",
+  "backHomeLabel": "Back to Home",
+  "comingSoonLabel": "Demo — Coming Soon",
+  "seo": {
+    "defaultTitle": "La Luce Estetica — Skincare Clinic",
+    "defaultDescription": "La Luce Estetica — aesthetics and body treatment studio. Demo website."
+  },
+  "nav": [
+    { "label": "Services", "href": "/services" },
+    { "label": "Studio", "href": "/studio" },
+    { "label": "FAQ", "href": "/faq" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "footer": {
+    "tagline": "Short placeholder line about the studio — one or two sentences describing the clinic and its approach will go here.",
+    "socials": [
+      { "label": "Instagram", "href": "#" },
+      { "label": "Facebook", "href": "#" }
+    ],
+    "address": {
+      "street": "Street Name 12",
+      "city": "000 00 City"
+    },
+    "email": "hello@example.com",
+    "phone": "+00 000 000 0000",
+    "hours": [
+      { "days": "Mon — Fri", "time": "09:00 — 19:00" },
+      { "days": "Saturday", "time": "10:00 — 16:00" },
+      { "days": "Sunday", "time": "Closed" }
+    ],
+    "bookLabel": "Book via Treatwell",
+    "copyright": "La Luce Estetica",
+    "note": "Demo website — all content is placeholder"
+  }
+}

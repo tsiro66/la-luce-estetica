@@ -1,43 +1,43 @@
-# Astro Starter Kit: Minimal
+# La Luce Estetica
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
+Aesthetics & body-treatment studio website. Built with [Astro](https://astro.build) + Tailwind CSS v4.
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command        | Action                                       |
+| :------------- | :------------------------------------------- |
+| `pnpm install` | Installs dependencies                        |
+| `pnpm dev`     | Starts local dev server at `localhost:4321`  |
+| `pnpm build`   | Builds the production site to `./dist/`      |
+| `pnpm preview` | Previews the build locally                   |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## ✍️ Editing content with PagesCMS
 
-## 👀 Want to learn more?
+All visible text on the site is editable through [PagesCMS](https://pagescms.org), which edits this repository's files directly via GitHub — no separate database.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### First-time setup
+
+1. Push this repository to GitHub (already done: `tsiro66/la-luce-estetica`).
+2. Go to [app.pagescms.org](https://app.pagescms.org) and sign in with GitHub.
+3. Choose the repository and the branch you deploy from (e.g. `main`).
+4. Edit content in the dashboard — changes are committed straight to the branch.
+
+Whenever a commit lands on the branch, your hosting provider rebuilds the site automatically.
+
+### What is editable
+
+| CMS collection    | File / folder               | Controls                                            |
+| :---------------- | :-------------------------- | :-------------------------------------------------- |
+| Site Settings     | `src/data/site.json`        | Brand name, wordmark, nav, Treatwell URL, footer, SEO defaults |
+| Home Page         | `src/data/home.json`        | Hero, marquee, featured-section copy, studio teaser, booking banner |
+| Placeholder Pages | `src/data/pages.json`       | Titles & notes of Services / Studio / FAQ / Contact |
+| Treatments        | `src/content/treatments/`   | One Markdown file per treatment (name, category, duration, price, order, featured, description) |
+| Media             | `public/uploads/`           | Uploaded images, served from `/uploads/...`         |
+
+The CMS field configuration lives in [.pages.yml](./.pages.yml). Keep it in sync whenever the data files change shape.
+
+### Notes
+
+- Hero & studio-teaser images: leaving the image field empty falls back to the built-in placeholder art.
+- Treatments: `order` controls listing position, `featured: true` items appear on the homepage.
+- Treatment descriptions (Markdown body) are used by the Services page.
