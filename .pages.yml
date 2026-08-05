@@ -1,4 +1,4 @@
-# PagesCMS configuration — https://pagescms.org
+# PagesCMS configuration (schema v2) — https://pagescms.org
 # Sign in at https://app.pagescms.org with GitHub and select this repo + branch to edit content.
 # Changes are committed directly to the branch; your deployment rebuilds on push.
 
@@ -11,16 +11,15 @@ content:
   # ---------- Global settings (header, footer, nav, SEO) ----------
   - name: site
     label: Site Settings
-    icon: ⚙️
-    description: Global content shared across every page — branding, navigation, footer, booking links.
-    type: data
+    type: file
     path: src/data/site.json
+    format: json
     fields:
       - name: siteName
         label: Site name
         type: string
         required: true
-        help: Used in the browser tab, mobile menu and footer.
+        description: Used in the browser tab, mobile menu and footer.
       - name: wordmark
         label: Header wordmark
         type: object
@@ -37,23 +36,19 @@ content:
         label: Treatwell booking URL
         type: string
         required: true
-        help: All "Book" buttons point here.
+        description: All "Book" buttons point here.
       - name: bookCta
         label: Header booking button label
         type: string
-        default: Book Now
       - name: mobileBookCta
         label: Mobile menu booking button label
         type: string
-        default: Book Appointment
       - name: backHomeLabel
         label: '"Back to Home" button label'
         type: string
-        default: Back to Home
       - name: comingSoonLabel
         label: Placeholder pages eyebrow label
         type: string
-        default: Demo — Coming Soon
       - name: seo
         label: Default SEO
         type: object
@@ -66,14 +61,15 @@ content:
             type: text
       - name: nav
         label: Navigation links
-        type: list
+        type: object
+        list: true
         fields:
           - name: label
             type: string
           - name: href
             label: Path
             type: string
-            help: "Internal pages: /services, /studio, /faq, /contact"
+            description: "Internal pages: /services, /studio, /faq, /contact"
       - name: footer
         type: object
         fields:
@@ -81,7 +77,8 @@ content:
             label: Footer tagline
             type: text
           - name: socials
-            type: list
+            type: object
+            list: true
             fields:
               - name: label
                 type: string
@@ -99,10 +96,11 @@ content:
             type: string
           - name: phone
             type: string
-            help: "Displayed as-is; the tel: link is generated automatically."
+            description: "Displayed as-is; the tel: link is generated automatically."
           - name: hours
             label: Opening hours
-            type: list
+            type: object
+            list: true
             fields:
               - name: days
                 type: string
@@ -121,10 +119,9 @@ content:
   # ---------- Home page ----------
   - name: home
     label: Home Page
-    icon: 🏠
-    description: All copy on the homepage — hero, marquee, featured treatments intro, studio teaser and booking banner.
-    type: data
+    type: file
     path: src/data/home.json
+    format: json
     fields:
       - name: hero
         label: Hero
@@ -156,13 +153,11 @@ content:
           - name: image
             label: Background image
             type: image
-            help: Leave empty to keep the built-in default photo.
+            description: Leave empty to keep the built-in default photo.
       - name: marquee
         label: Scrolling marquee items
-        type: list
-        field:
-          name: item
-          type: string
+        type: string
+        list: true
       - name: featured
         label: Featured treatments section
         type: object
@@ -197,7 +192,7 @@ content:
             type: string
           - name: image
             type: image
-            help: Leave empty to show the placeholder frame instead.
+            description: Leave empty to show the placeholder frame instead.
           - name: imagePlaceholder
             label: Placeholder text (shown while no image is set)
             type: string
@@ -225,10 +220,9 @@ content:
   # ---------- Placeholder pages ----------
   - name: pages
     label: Placeholder Pages
-    icon: 📄
-    description: Titles and notes for the Services, Studio, FAQ and Contact placeholder pages.
-    type: data
+    type: file
     path: src/data/pages.json
+    format: json
     fields:
       - name: services
         label: Services page
@@ -266,10 +260,13 @@ content:
   # ---------- Treatments ----------
   - name: treatments
     label: Treatments
-    icon: 💆
-    description: Treatment menu entries. Featured ones appear on the homepage; all appear on the Services page.
-    type: content
+    type: collection
     path: src/content/treatments
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
     fields:
       - name: title
         label: Treatment name
@@ -278,20 +275,24 @@ content:
       - name: category
         label: Category / eyebrow
         type: string
-        help: Shown next to the number, e.g. "Body Treatment".
+        description: 'Shown next to the number, e.g. "Body Treatment".'
       - name: duration
         type: string
-        help: "e.g. 45 min"
+        description: "e.g. 45 min"
       - name: price
         type: number
-        help: In EUR, without the € sign.
+        options:
+          min: 0
+        description: In EUR, without the € sign.
       - name: order
         type: number
-        help: Controls the position in listings (1 = first).
+        options:
+          min: 1
+        description: Controls the position in listings (1 = first).
       - name: featured
         type: boolean
         default: true
-        help: Featured treatments are shown on the homepage.
+        description: Featured treatments are shown on the homepage.
       - name: body
         label: Description
-        type: richtext
+        type: rich-text
