@@ -11,6 +11,20 @@ Aesthetics & body-treatment studio website. Built with [Astro](https://astro.bui
 | `pnpm build`   | Builds the production site to `./dist/`      |
 | `pnpm preview` | Previews the build locally                   |
 
+## ✉️ Contact form (Resend)
+
+The `/contact` form sends email via [Resend](https://resend.com) through an Astro Action (`src/actions/index.ts`). Configure it with environment variables (see `.env.example`):
+
+| Variable         | Purpose                                                          |
+| :--------------- | :--------------------------------------------------------------- |
+| `RESEND_API_KEY` | API key from [resend.com/api-keys](https://resend.com/api-keys) — **required** |
+| `EMAIL_TO`       | Recipient inbox; defaults to the footer email in `site.json`     |
+| `EMAIL_FROM`     | Verified sender, e.g. `La Luce Estetica <hello@yourdomain>`; defaults to the footer email |
+
+For production you must verify a sending domain at [resend.com/domains](https://resend.com/domains) (the built-in `onboarding@resend.dev` sender works only for local testing to your own account address). Replies to a submission go to the visitor's email via `Reply-To`.
+
+Hosting note: the site pages stay static; the Netlify adapter (already configured in `astro.config.mjs`) runs only the action endpoint. Deploying elsewhere? Swap `@astrojs/netlify` for the matching adapter (`@astrojs/vercel`, `@astrojs/cloudflare`, …) — nothing else changes.
+
 ## ✍️ Editing content with PagesCMS
 
 All visible text on the site is editable through [PagesCMS](https://pagescms.org), which edits this repository's files directly via GitHub — no separate database.
@@ -30,7 +44,8 @@ Whenever a commit lands on the branch, your hosting provider rebuilds the site a
 | :---------------- | :-------------------------- | :-------------------------------------------------- |
 | Site Settings     | `src/data/site.json`        | Brand name, wordmark, nav, Treatwell URL, footer, SEO defaults |
 | Home Page         | `src/data/home.json`        | Hero, marquee, featured-section copy, studio teaser, booking banner |
-| Placeholder Pages | `src/data/pages.json`       | Titles & notes of Services / Studio / FAQ / Contact |
+| Placeholder Pages | `src/data/pages.json`       | Titles & notes of Services / Studio / FAQ           |
+| Contact Page      | `src/data/contact.json`     | Contact page copy, form labels, success/error messages |
 | Treatments        | `src/content/treatments/`   | One Markdown file per treatment (name, category, duration, price, order, featured, description) |
 | Media             | `public/uploads/`           | Uploaded images, served from `/uploads/...`         |
 

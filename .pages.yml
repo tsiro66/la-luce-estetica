@@ -257,6 +257,110 @@ content:
           - name: note
             type: text
 
+  # ---------- Contact page ----------
+  - name: contact
+    label: Contact Page
+    type: file
+    path: src/data/contact.json
+    format: json
+    fields:
+      - name: eyebrow
+        type: string
+      - name: titleStart
+        label: Heading, first part
+        type: string
+      - name: titleAccent
+        label: Heading, italic accent
+        type: string
+      - name: intro
+        type: text
+      - name: visitHeading
+        type: string
+      - name: callHeading
+        type: string
+      - name: hoursHeading
+        type: string
+      - name: bookHeading
+        type: string
+      - name: replyNote
+        label: Microcopy under submit button
+        type: string
+      - name: fields
+        type: object
+        fields:
+          - name: name
+            type: object
+            fields:
+              - name: label
+                type: string
+              - name: placeholder
+                type: string
+          - name: email
+            type: object
+            fields:
+              - name: label
+                type: string
+              - name: placeholder
+                type: string
+          - name: phone
+            type: object
+            fields:
+              - name: label
+                type: string
+              - name: placeholder
+                type: string
+          - name: treatment
+            type: object
+            fields:
+              - name: label
+                type: string
+              - name: placeholder
+                type: string
+              - name: options
+                type: list
+          - name: message
+            type: object
+            fields:
+              - name: label
+                type: string
+              - name: placeholder
+                type: string
+      - name: submitLabel
+        type: string
+      - name: success
+        type: object
+        fields:
+          - name: titleStart
+            label: Success heading, first part
+            type: string
+          - name: titleAccent
+            label: Success heading, italic accent
+            type: string
+          - name: body
+            type: text
+          - name: again
+            label: "Send another" link label
+            type: string
+      - name: errorTitle
+        label: Error heading
+        type: string
+      - name: errorBody
+        label: Error body
+        type: text
+      - name: errors
+        type: object
+        fields:
+          - name: name
+            type: string
+          - name: email
+            type: string
+          - name: message
+            type: string
+          - name: treatment
+            type: string
+          - name: general
+            type: string
+
   # ---------- Treatments ----------
   - name: treatments
     label: Treatments

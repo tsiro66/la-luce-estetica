@@ -1,8 +1,293 @@
 ---
-import PlaceholderPage from "../components/PlaceholderPage.astro";
-import pages from "../data/pages.json";
+import { actions, isInputError } from "astro:actions";
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import site from "../data/site.json";
+import contact from "../data/contact.json";
+import home from "../data/home.json";
 
-const page = pages.contact;
+const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
+
+const result = Astro.getActionResult(actions.sendEnquiry);
+const inputErrors = isInputError(result?.error) ? (result.error.fields ?? {}) : {};
+const sent = Boolean(result && !result.error);
+
+// Field-level error lookup: zod errors are arrays; Astro flattens them
+// into fields.{name} arrays when the action rejects with input errors.
+const errFor = (field: string) =>
+  inputErrors[field as keyof typeof inputErrors]?.[0] as string | undefined;
+
+const title = `${contact.eyebrow} — ${site.siteName}`;
+
+const fieldClass =
+  "w-full border-0 border-b border-ink/20 bg-transparent px-0 py-2.5 font-sans text-base text-ink placeholder:text-ink/30 focus:border-champagne focus:outline-none focus:ring-0 transition-colors duration-300";
+
+const labelClass =
+  "block font-sans text-[0.65rem] font-medium uppercase tracking-[0.24em] text-ink/50";
 ---
+<Layout title={title} description={contact.intro}>
+  <!-- ============ MASTHEAD ============ -->
+  <section class="border-b border-ink/10">
+    <div class="mx-auto max-w-7xl px-6 pt-10 pb-10 text-center sm:pt-14 sm:pb-12 lg:px-8">
+      <p class="eyebrow" data-reveal>{contact.eyebrow}</p>
+      <h1
+        class="mt-5 font-display text-[clamp(2.6rem,6vw,4.75rem)] font-light leading-[1.02] text-ink"
+        data-reveal
+        style="--reveal-delay:80ms"
+      >
+        {contact.titleStart}
+{" "}
+        <em class="italic text-champagne">{contact.titleAccent}</em>
+      </h1>
+      <p
+        class="mx-auto mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/60"
+        data-reveal
+        style="--reveal-delay:160ms"
+      >
+        {contact.intro}
+      </p>
+    </div>
+  </section>
 
-<PlaceholderPage title={page.title} note={page.note} />
+  <!-- ============ FORM + INFO ============ -->
+  <section class="mx-auto max-w-7xl px-6 pt-10 pb-20 sm:pt-12 sm:pb-28 lg:px-8">
+    <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-x-14">
+
+      <!-- ===== Info ===== -->
+      <aside class="order-2 lg:order-1 lg:col-span-5" data-reveal>
+        <div>
+          <h2 class="eyebrow">{contact.visitHeading}</h2>
+          <address class="mt-4 font-sans text-base not-italic leading-relaxed text-ink">
+            {site.footer.address.street}<br />
+            {site.footer.address.city}
+          </address>
+        </div>
+
+        <div class="mt-10">
+          <h2 class="eyebrow">{contact.callHeading}</h2>
+          <div class="mt-2">
+            <a
+              href={`mailto:${site.footer.email}`}
+              class="group flex items-baseline justify-between gap-4 border-b border-ink/15 py-3 transition-colors duration-300 hover:bg-blush"
+            >
+              <span class="font-display text-xl font-light text-ink transition-colors group-hover:text-champagne sm:text-2xl">
+                {site.footer.email}
+              </span>
+              <span class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">&nearr;</span>
+            </a>
+            <a
+              href={phoneHref}
+              class="group flex items-baseline justify-between gap-4 border-b border-ink/15 py-3 transition-colors duration-300 hover:bg-blush"
+            >
+              <span class="font-display text-xl font-light tabular-nums text-ink transition-colors group-hover:text-champagne sm:text-2xl">
+                {site.footer.phone}
+              </span>
+              <span class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">&nearr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <h2 class="eyebrow">{contact.hoursHeading}</h2>
+          <dl class="mt-2">
+            {
+              site.footer.hours.map((row) => (
+                <div class="flex items-baseline justify-between gap-6 border-b border-ink/15 py-3">
+                  <dt class="font-sans text-sm text-ink/50">{row.days}</dt>
+                  <dd class="font-sans text-sm tabular-nums text-ink">{row.time}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+      </aside>
+
+      <!-- ===== Form panel ===== -->
+      <div class="order-1 lg:order-2 lg:col-span-7 lg:border-l lg:border-ink/10 lg:pl-14" data-reveal style="--reveal-delay:120ms">
+          {
+            sent ? (
+              <div class="py-8 text-center">
+                <p class="eyebrow">{contact.eyebrow}</p>
+                <h2 class="mt-4 font-display text-3xl font-light leading-[1.05] text-ink sm:text-4xl">
+                  {contact.success.titleStart}
+{" "}
+                  <em class="italic text-champagne">{contact.success.titleAccent}</em>
+                </h2>
+                <p class="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/60">
+                  {contact.success.body}
+                </p>
+                <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+                  <Button href="/" variant="outline-dark">{site.backHomeLabel}</Button>
+                  <Button href="/contact" variant="outline-dark">
+                    {contact.success.again}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {result?.error && !isInputError(result.error) && (
+                  <p class="mb-8 border border-ink/15 bg-paper px-5 py-4 font-sans text-sm text-ink/70" role="alert">
+                    <span class="font-medium uppercase tracking-[0.2em]">{contact.errorTitle}:</span>{" "}
+                    {contact.errorBody}
+                    <span class="sr-only">{result.error.message}</span>
+                  </p>
+                )}
+
+                <form method="POST" action={actions.sendEnquiry} novalidate>
+                  <!-- Honeypot — visually hidden, ignored by humans -->
+                  <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+                    <label>
+                      Company
+                      <input type="text" name="company" tabindex="-1" autocomplete="off" />
+                    </label>
+                  </div>
+
+                  <div class="grid grid-cols-1 gap-y-7 sm:gap-y-8">
+                    <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
+                      <div>
+                        <label for="cf-name" class={labelClass}>{contact.fields.name.label}</label>
+                        <input
+                          id="cf-name"
+                          type="text"
+                          name="name"
+                          required
+                          autocomplete="name"
+                          placeholder={contact.fields.name.placeholder}
+                          class:list={[fieldClass, inputErrors.name && "border-red-400/70"]}
+                          aria-invalid={Boolean(inputErrors.name)}
+                          aria-describedby={inputErrors.name ? "cf-name-error" : undefined}
+                        />
+                        {inputErrors.name && (
+                          <p id="cf-name-error" class="mt-2 font-sans text-xs text-red-500">{errFor("name") ?? contact.errors.name}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label for="cf-email" class={labelClass}>{contact.fields.email.label}</label>
+                        <input
+                          id="cf-email"
+                          type="email"
+                          name="email"
+                          required
+                          autocomplete="email"
+                          placeholder={contact.fields.email.placeholder}
+                          class:list={[fieldClass, inputErrors.email && "border-red-400/70"]}
+                          aria-invalid={Boolean(inputErrors.email)}
+                          aria-describedby={inputErrors.email ? "cf-email-error" : undefined}
+                        />
+                        {inputErrors.email && (
+                          <p id="cf-email-error" class="mt-2 font-sans text-xs text-red-500">{errFor("email") ?? contact.errors.email}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
+                      <div>
+                        <label for="cf-phone" class={labelClass}>{contact.fields.phone.label}</label>
+                        <input
+                          id="cf-phone"
+                          type="tel"
+                          name="phone"
+                          autocomplete="tel"
+                          placeholder={contact.fields.phone.placeholder}
+                          class={fieldClass}
+                        />
+                      </div>
+
+                      <div>
+                        <label for="cf-treatment" class={labelClass}>{contact.fields.treatment.label}</label>
+                        <div class="relative">
+                          <select
+                            id="cf-treatment"
+                            name="treatment"
+                            required
+                            class:list={[fieldClass, "appearance-none pr-8", inputErrors.treatment && "border-red-400/70"]}
+                            aria-invalid={Boolean(inputErrors.treatment)}
+                            aria-describedby={inputErrors.treatment ? "cf-treatment-error" : undefined}
+                          >
+                            <option value="-" class="text-ink/30">{contact.fields.treatment.placeholder}</option>
+                            {contact.fields.treatment.options.map((opt) => (
+                              <option value={opt} class="text-ink">{opt}</option>
+                            ))}
+                          </select>
+                          <svg
+                            class="pointer-events-none absolute right-1 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </div>
+                        {inputErrors.treatment && (
+                          <p id="cf-treatment-error" class="mt-2 font-sans text-xs text-red-500">{errFor("treatment") ?? contact.errors.treatment}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="cf-message" class={labelClass}>{contact.fields.message.label}</label>
+                      <textarea
+                        id="cf-message"
+                        name="message"
+                        required
+                        rows="5"
+                        placeholder={contact.fields.message.placeholder}
+                        class:list={[fieldClass, "min-h-28 resize-y", inputErrors.message && "border-red-400/70"]}
+                        aria-invalid={Boolean(inputErrors.message)}
+                        aria-describedby={inputErrors.message ? "cf-message-error" : undefined}
+                      />
+                      {inputErrors.message && (
+                        <p id="cf-message-error" class="mt-2 font-sans text-xs text-red-500">{errFor("message") ?? contact.errors.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div class="mt-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+                    <button
+                      type="submit"
+                      class="inline-flex items-center justify-center bg-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper transition-colors duration-300 hover:bg-champagne hover:text-white"
+                    >
+                      {contact.submitLabel}
+                    </button>
+                    <p class="font-sans text-[0.6rem] uppercase tracking-[0.22em] text-ink/40">
+                      {contact.replyNote}
+                    </p>
+                  </div>
+                </form>
+              </>
+            )
+          }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOOKING BANNER ============ -->
+  <section class="border-t-2 border-champagne/40 bg-ink text-paper">
+    <div class="mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
+      <div class="max-w-3xl" data-reveal>
+        <p class="eyebrow">{home.booking.eyebrow}</p>
+        <h2 class="mt-6 font-display text-[clamp(2rem,5vw,3.75rem)] font-light leading-[1.05]">
+          {home.booking.titleStart}{" "}
+          <em class="italic text-sand">{home.booking.titleAccent}</em>{" "}
+          {home.booking.titleEnd}
+        </h2>
+        <p class="mt-6 max-w-xl font-sans text-base leading-relaxed text-paper/70">
+          {home.booking.description}
+        </p>
+        <div class="mt-10">
+          <Button href={site.treatwellUrl} external variant="light">
+            {home.booking.cta}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  select {
+    background-image: none;
+  }
+</style>

@@ -3,6 +3,9 @@ import PlaceholderPage from "../components/PlaceholderPage.astro";
 import pages from "../data/pages.json";
 
 const page = pages.studio;
+
+export const prerender = true;
+
 ---
 
 <PlaceholderPage title={page.title} note={page.note} />

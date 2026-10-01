@@ -1,0 +1,57 @@
+{
+  "eyebrow": "Contact",
+  "titleStart": "Begin your",
+  "titleAccent": "ritual",
+  "intro": "Questions about treatments, preparation, or finding us — write a line and we will reply within one business day. Prefer to book instantly? Treatwell is one click away.",
+  "visitHeading": "Visit",
+  "callHeading": "Call or write",
+  "hoursHeading": "Hours",
+  "replyNote": "We reply within one business day",
+  "fields": {
+    "name": {
+      "label": "Name",
+      "placeholder": "Your name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "you@example.com"
+    },
+    "phone": {
+      "label": "Phone — optional",
+      "placeholder": "+00 000 000 0000"
+    },
+    "treatment": {
+      "label": "Treatment of interest",
+      "placeholder": "Select a treatment",
+      "options": [
+        "Not sure yet — advise me",
+        "LPG Endermologie",
+        "EMS Sculpting",
+        "Endospheres Therapy",
+        "Pressotherapy",
+        "Something else"
+      ]
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "What would you like to work on?"
+    }
+  },
+  "submitLabel": "Send enquiry",
+  "success": {
+    "titleStart": "Thank you — your note is",
+    "titleAccent": "with us",
+    "body": "We will write back within one business day. If it is urgent, the phone is faster.",
+    "again": "Send another note"
+  },
+  "errorTitle": "Something went astray",
+  "errorBody": "The message did not leave the building. Try again, or call us directly.",
+  "errors": {
+    "name": "Please tell us your name.",
+    "email": "We need a valid email to reply.",
+    "message": "A short message helps us help you.",
+    "treatment": "Please choose a treatment — or “not sure yet”.",
+    "general": "Please check the highlighted fields and try again."
+  },
+  "bookHeading": "Book now"
+}
