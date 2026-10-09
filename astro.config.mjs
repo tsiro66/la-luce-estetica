@@ -1,9 +1,13 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import netlify from '@astrojs/netlify';
 
 // @ts-check
 export default defineConfig({
+  // TODO: replace with the real domain once confirmed (custom or Netlify).
+  site: 'https://la-luce-estetica.netlify.app',
+  integrations: [sitemap()],
   // Site pages stay prerendered/static; Netlify adapter exists so the
   // Astro Action (src/actions/index.ts -> Resend enquiry email) can run
   // as an on-demand server endpoint.

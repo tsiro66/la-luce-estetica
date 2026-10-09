@@ -61,6 +61,14 @@ const labelClass =
             {site.footer.address.street}<br />
             {site.footer.address.city}
           </address>
+          <a
+            href={site.footer.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-3 inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink underline decoration-sand underline-offset-8 transition-colors hover:decoration-champagne"
+          >
+            {site.footer.mapLabel} <span aria-hidden="true">&nearr;</span>
+          </a>
         </div>
 
         <div class="mt-10">

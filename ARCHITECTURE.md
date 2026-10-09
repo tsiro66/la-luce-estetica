@@ -2,23 +2,27 @@
 
 This document outlines the site structure, routing, component hierarchy, and content layout for the Skincare Clinic web application.
 
-> **Agent Directive:** Read this document alongside `DESIGN.md`. Maintain the sharp-edged (`rounded-none`), card-free, editorial serif aesthetic across all specified pages and components.
+> **Status (implementation):** Built with **Astro 7 + Tailwind v4**, Netlify adapter, static pages + one SSR action for the contact form. All copy is **Greek** (`lang="el"`); treatments live in the `treatments` content collection (34 entries) with one static page each at `/services/{slug}`.
+
+> **Agent Directive:** Read this document alongside `DESIGN.md`. Maintain the sharp-edged (`rounded-none`), card-free, editorial serif aesthetic across all specified pages and components. Fonts: Playfair Display (display) + Commissioner (sans) — both with full Greek support.
 
 ---
 
 ## 1. Tech Stack & Route Overview
 
-- **Framework:** Next.js (App Router) or Vite + React
-- **Styling:** Tailwind CSS (Custom configured for Noto Serif / Noto Serif Display)
+- **Framework:** Astro 7 (server output, prerendered static pages, Netlify functions only for `/contact` form action)
+- **Styling:** Tailwind CSS v4 (Playfair Display / Commissioner)
 - **Booking Integration:** Direct external redirection to Treatwell (No internal booking engine)
+- **CMS:** PagesCMS (see `.pages.yml` and README) — `site.json`, `home.json`, `contact.json`, `pages.json`, `src/content/treatments/*`, `src/data/services-menu.json` is source-managed
 
-| Route Path  | Page Name    | Primary Objective                                                           |
-| :---------- | :----------- | :-------------------------------------------------------------------------- |
-| `/`         | **Homepage** | High-impact brand hero, service preview, studio teaser, book CTA            |
-| `/services` | **Services** | Editorial listing of core treatments (LPG, EMS, Endospheres, Press therapy) |
-| `/studio`   | **Studio**   | Imagery showcase of physical space and medical-grade machinery              |
-| `/faq`      | **FAQ**      | Minimalist accordion/list addressing common treatment queries               |
-| `/contact`  | **Contact**  | Minimalist consultation inquiry form & location details                     |
+| Route Path            | Page Name        | Primary Objective                                                                                                    |
+| :-------------------- | :--------------- | :------------------------------------------------------------------------------------------------------------------- |
+| `/`                   | **Homepage**     | Hero **video** (photo fallback), best-sellers, marquee, studio teaser, booking CTA                                    |
+| `/services`           | **Services**     | Category-grouped directory of all 34 treatments + laser/wax/brow region menus; each row links to its detail page       |
+| `/services/[slug]`    | **Treatment**    | Full treatment page: intro, problem, benefits, before/after, FAQ, info sidebar, Treatwell CTA (34 static pages)        |
+| `/studio`             | **Studio**       | Photo gallery, **360° virtual tour** (pannellum, equirectangular scenes in `src/assets/tour/`), technology, hygiene    |
+| `/faq`                | **FAQ**          | General booking/cancellation Q&A + per-treatment FAQs aggregated from content collection                               |
+| `/contact`            | **Contact**      | Details + Resend-powered enquiry form; address/phone/hours from `site.json`                                            |
 
 ---
 

@@ -15,12 +15,17 @@ const subLetters = site.wordmark.sub.split("");
 
 <header id="site-header" data-theme={theme} class="fixed inset-x-0 top-0 z-50">
   <div class="mx-auto max-w-7xl px-6 py-6 lg:px-8">
-    <!-- Desktop: split nav with centered wordmark -->
+    <!-- Desktop: split nav with truly centered wordmark.
+         md–lg: wordmark left + all links right (centered wordmark doesn't
+         fit the long Greek labels below 1280px). xl+: 3-column grid with
+         links pinned to the outer edges and the wordmark dead center —
+         minmax(0,1fr) forces equal side tracks so the center is exact. -->
     <nav
       aria-label="Primary"
-      class="hidden items-center gap-12 md:grid md:grid-cols-[1fr_auto_1fr] lg:gap-16"
+      class="hidden items-center md:flex md:justify-between xl:grid xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] xl:gap-16"
     >
-      <div class="flex items-center justify-end gap-10">
+      <!-- Left edge cluster — xl and up only -->
+      <div class="hidden xl:flex xl:items-center xl:justify-start xl:gap-10">
         {
           leftLinks.map((link) => (
             <a
@@ -49,7 +54,21 @@ const subLetters = site.wordmark.sub.split("");
         </span>
       </a>
 
-      <div class="flex items-center justify-start gap-10">
+      <!-- Right cluster: all links on md–lg (wordmark-left row),
+           edge-pinned cluster on xl+ -->
+      <div
+        class="flex items-center gap-4 lg:gap-8 xl:justify-end xl:gap-10"
+      >
+        {
+          leftLinks.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link font-sans text-xs font-medium uppercase tracking-[0.2em] xl:hidden"
+            >
+              {link.label}
+            </a>
+          ))
+        }
         {
           rightLinks.map((link) => (
             <a
@@ -60,7 +79,9 @@ const subLetters = site.wordmark.sub.split("");
             </a>
           ))
         }
-        <span class="h-3.5 w-px bg-current opacity-25" aria-hidden="true"
+        <span
+          class="hidden h-3.5 w-px bg-current opacity-25 lg:inline-block"
+          aria-hidden="true"
         ></span>
         <a
           href={site.treatwellUrl}
@@ -85,7 +106,7 @@ const subLetters = site.wordmark.sub.split("");
         aria-controls="mobile-menu"
         class="nav-link cursor-pointer font-sans text-xs font-medium uppercase tracking-[0.2em]"
       >
-        <span data-label>Menu</span>
+        <span data-label>{site.menuLabels.open}</span>
       </button>
     </div>
   </div>
@@ -251,6 +272,8 @@ const subLetters = site.wordmark.sub.split("");
 </style>
 
 <script>
+  import site from "../data/site.json";
+
   const header = document.getElementById("site-header");
   const toggle = document.getElementById("menu-toggle");
   const label = toggle?.querySelector("[data-label]");
@@ -282,7 +305,7 @@ const subLetters = site.wordmark.sub.split("");
     header?.toggleAttribute("data-menu-open", open);
     if (open) header?.removeAttribute("data-hidden");
     document.body.classList.toggle("overflow-hidden", open);
-    if (label) label.textContent = open ? "Close" : "Menu";
+    if (label) label.textContent = open ? site.menuLabels.close : site.menuLabels.open;
   }
 
   toggle?.addEventListener("click", () =>

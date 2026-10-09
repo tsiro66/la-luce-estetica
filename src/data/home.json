@@ -1,43 +1,46 @@
 {
   "hero": {
-    "eyebrow": "Skincare Clinic — Placeholder Tagline",
-    "titleStart": "Hero Campaign",
-    "titleAccent": "Headline",
-    "titleEnd": "Goes Here",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    "primaryCta": "Book Now",
-    "secondaryCta": "Explore Treatments",
+    "eyebrow": "Estetica & Skin Clinic — Χαλάνδρι",
+    "titleStart": "Αν έχεις κουραστεί",
+    "titleAccent": "από το ξυράφι",
+    "titleEnd": "— πρέπει να μας γνωρίσεις.",
+    "description": "Αν έχεις κουραστεί από τις παραδοσιακές μεθόδους αποτρίχωσης και τους ερεθισμούς, τότε πρέπει να μας γνωρίσεις. Στο La Luce Estetica & Skin Clinic, αποκτάς την επιδερμίδα που ονειρεύεσαι για πάντα: Laser Alexandrite τελευταίας τεχνολογίας — γρήγορα, ανώδυνα και μόνιμα αποτελέσματα από την 1η κιόλας συνεδρία, για κάθε τύπο δέρματος.",
+    "primaryCta": "Κλείστε Ραντεβού",
+    "secondaryCta": "Δείτε τις Υπηρεσίες",
     "scrollLabel": "Scroll",
+    "video": "",
     "image": ""
   },
   "marquee": [
+    "Laser Alexandrite",
+    "Βαθύς Καθαρισμός Προσώπου",
     "LPG Endermologie",
-    "EMS Sculpting",
     "Endospheres Therapy",
-    "Pressotherapy",
-    "Book via Treatwell"
+    "Cavitation",
+    "Couple Massage",
+    "Κλείστε Ραντεβού Online"
   ],
   "featured": {
-    "eyebrow": "Selected Treatments",
-    "titleStart": "Featured",
-    "titleAccent": "Treatments",
-    "cta": "View All Treatments"
+    "eyebrow": "Best Sellers",
+    "titleStart": "Οι δημοφιλείς",
+    "titleAccent": "θεραπείες",
+    "cta": "Δείτε όλες τις υπηρεσίες"
   },
   "studioTeaser": {
-    "eyebrow": "The Studio",
-    "titleStart": "The",
-    "titleAccent": "Studio",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit — a short teaser line about the clinic space, its atmosphere, and medical-grade technology.",
-    "cta": "Discover the Studio",
+    "eyebrow": "Ο Χώρος μας",
+    "titleStart": "Ανακαλύψτε",
+    "titleAccent": "το στούντιο",
+    "description": "Καλαίσθητοι χώροι περιποίησης, μηχανήματα τελευταίας τεχνολογίας και μια ατμόσφαιρα σχεδιασμένη για να σας χαλαρώσει από την πρώτη στιγμή.",
+    "cta": "Δείτε τον χώρο",
     "image": "",
-    "imagePlaceholder": "Studio photography — to be added"
+    "imagePlaceholder": "Φωτογραφία στούντιο — σε εξέλιξη"
   },
   "booking": {
-    "eyebrow": "Appointments via Treatwell",
-    "titleStart": "Booking Banner",
-    "titleAccent": "Headline",
-    "titleEnd": "Goes Here",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Reserve your treatment in a few clicks through our Treatwell listing.",
-    "cta": "Book Appointment"
+    "eyebrow": "Ραντεβού μέσω Treatwell",
+    "titleStart": "Κλείστε",
+    "titleAccent": "το ραντεβού σας",
+    "titleEnd": "σήμερα",
+    "description": "Επιλέξτε τη θεραπεία σας και κλείστε online σε λίγα λεπτά μέσω του Treatwell — ή στείλτε μας σημείωμα και θα σας απαντήσουμε μέσα σε μια εργάσιμη.",
+    "cta": "Κλείστε Ραντεβού"
   }
 }

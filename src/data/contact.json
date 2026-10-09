@@ -1,57 +1,60 @@
 {
-  "eyebrow": "Contact",
-  "titleStart": "Begin your",
-  "titleAccent": "ritual",
-  "intro": "Questions about treatments, preparation, or finding us — write a line and we will reply within one business day. Prefer to book instantly? Treatwell is one click away.",
-  "visitHeading": "Visit",
-  "callHeading": "Call or write",
-  "hoursHeading": "Hours",
-  "replyNote": "We reply within one business day",
+  "eyebrow": "Επικοινωνία",
+  "titleStart": "Ξεκινήστε",
+  "titleAccent": "τη φροντίδα σας",
+  "intro": "Ερωτήσεις για θεραπείες, προετοιμασία ή πρόσβαση — στείλτε μας σημείωμα και θα απαντήσουμε μέσα σε μια εργάσιμη. Προτιμάτε άμεσο κλείσιμο; Το Treatwell είναι ένα κλικ μακριά.",
+  "visitHeading": "Διεύθυνση",
+  "callHeading": "Τηλέφωνο & email",
+  "hoursHeading": "Ωράριο",
+  "replyNote": "Απαντάμε μέσα σε μια εργάσιμη",
   "fields": {
     "name": {
-      "label": "Name",
-      "placeholder": "Your name"
+      "label": "Ονοματεπώνυμο",
+      "placeholder": "Το όνομά σας"
     },
     "email": {
       "label": "Email",
       "placeholder": "you@example.com"
     },
     "phone": {
-      "label": "Phone — optional",
-      "placeholder": "+00 000 000 0000"
+      "label": "Τηλέφωνο — προαιρετικό",
+      "placeholder": "21 0000 0000"
     },
     "treatment": {
-      "label": "Treatment of interest",
-      "placeholder": "Select a treatment",
+      "label": "Θεραπεία που σας ενδιαφέρει",
+      "placeholder": "Επιλέξτε θεραπεία",
       "options": [
-        "Not sure yet — advise me",
-        "LPG Endermologie",
-        "EMS Sculpting",
-        "Endospheres Therapy",
-        "Pressotherapy",
-        "Something else"
+        "Δεν είμαι σίγουρος/η — συμβουλέψτε με",
+        "Αποτρίχωση Laser Alexandrite",
+        "Αποτρίχωση με Κερί",
+        "Βαθύς Καθαρισμός Προσώπου",
+        "Θεραπείες Προσώπου",
+        "Μασάζ",
+        "Θεραπείες Σώματος",
+        "Couple Massage",
+        "Κάτι άλλο"
       ]
     },
     "message": {
-      "label": "Message",
-      "placeholder": "What would you like to work on?"
+      "label": "Μήνυμα",
+      "placeholder": "Ποια είναι η ανάγκη σας;"
     }
   },
-  "submitLabel": "Send enquiry",
+  "submitLabel": "Αποστολή",
   "success": {
-    "titleStart": "Thank you — your note is",
-    "titleAccent": "with us",
-    "body": "We will write back within one business day. If it is urgent, the phone is faster.",
-    "again": "Send another note"
+    "titleStart": "Ευχαριστούμε — το μήνυμά σας",
+    "titleAccent": "παραλήφθηκε",
+    "body": "Θα σας απαντήσουμε μέσα σε μια εργάσιμη. Αν είναι επείγον, το τηλέφωνο είναι πιο γρήγορο.",
+    "again": "Αποστολή νέου μηνύματος"
   },
-  "errorTitle": "Something went astray",
-  "errorBody": "The message did not leave the building. Try again, or call us directly.",
+  "errorTitle": "Κάτι πήγε στραβά",
+  "errorBody": "Το μήνυμα δεν εστάλη. Δοκιμάστε ξανά ή καλέστε μας απευθείας.",
   "errors": {
-    "name": "Please tell us your name.",
-    "email": "We need a valid email to reply.",
-    "message": "A short message helps us help you.",
-    "treatment": "Please choose a treatment — or “not sure yet”.",
-    "general": "Please check the highlighted fields and try again."
+    "name": "Παρακαλώ συμπληρώστε το όνομά σας.",
+    "email": "Χρειαζόμαστε ένα έγκυρο email για να σας απαντήσουμε.",
+    "message": "Ένα σύντομο μήνυμα μας βοηθά να σας βοηθήσουμε.",
+    "treatment": "Παρακαλώ επιλέξτε θεραπεία — ή «δεν είμαι σίγουρος/η».",
+    "general": "Παρακαλώ ελέγξτε τα επισημασμένα πεδία και δοκιμάστε ξανά."
   },
-  "bookHeading": "Book now"
+  "bookHeading": "Κλείστε ραντεβού τώρα"
 }

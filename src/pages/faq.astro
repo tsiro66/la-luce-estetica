@@ -1,10 +1,127 @@
 ---
-import PlaceholderPage from "../components/PlaceholderPage.astro";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import site from "../data/site.json";
 import pages from "../data/pages.json";
 
-export const prerender = true;
+const treatments = await getCollection("treatments");
 
-const page = pages.faq;
+const generalFaqs = [
+  {
+    q: "Πώς κλείνω ραντεβού;",
+    a: "Άμεσα και online μέσω Treatwell — επιλέγετε τη θεραπεία, ημερομηνία και ώρα. Αν προτιμάτε φωνητική επιβεβαίωση, καλέστε μας στο " + site.footer.phone + " ή στείλτε μήνυμα από τη φόρμα επικοινωνίας.",
+  },
+  {
+    q: "Πόσο νωρίς πρέπει να έρχομαι;",
+    a: "Σας συστήνουμε να προσέρχεστε 5–10 λεπτά νωρίτερα, ώστε να ξεκινάμε τις θεραπείες στην ώρα τους και να απολαμβάνετε ολόκληρη τη διάρκειά τους.",
+  },
+  {
+    q: "Υπάρχει πολιτική ακύρωσης;",
+    a: "Αν δεν μπορείτε να παρεβρεθείτε, παρακαλούμε ενημερώστε μας τουλάχιστον 24 ώρες πριν μέσω Treatwell ή τηλεφώνου — έτσι μπορούμε να προσφέρουμε τη θέση σε άλλον πελάτη.",
+  },
+  {
+    q: "Οι θεραπείες απευθύνονται και σε άνδρες;",
+    a: "Ναι. Όλες μας οι υπηρεσίες — αποτρίχωση laser, θεραπείες προσώπου, μασάζ και θεραπείες σώματος — προσφέρονται για γυναίκες και άνδρες.",
+  },
+  {
+    q: "Πώς πληρώνω;",
+    a: "Δεχόμαστε μετρητά και κάρτες. Η κράτηση γίνεται χωρίς προπληρωμή μέσω Treatwell.",
+  },
+];
+
+const byTreatment = treatments
+  .filter((t) => t.data.faq.length > 0)
+  .map((t) => ({ id: t.id, title: t.data.title, items: t.data.faq }));
+
+export const prerender = true;
 ---
 
-<PlaceholderPage title={page.title} note={page.note} />
+<Layout
+  title={`${pages.faq.title} — ${site.siteName}`}
+  description="Απαντήσεις σε συχνές ερωτήσεις για θεραπείες, προετοιμασία, κλείσιμο ραντεβού και πολιτική ακύρωσης στη La Luce Estetica & Skin Clinic."
+>
+  <section class="mx-auto max-w-4xl px-6 pt-24 pb-8 lg:px-8">
+    <p class="eyebrow" data-reveal>La Luce Estetica & Skin Clinic</p>
+    <h1
+      class="mt-4 max-w-3xl font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+      data-reveal
+      style="--reveal-delay:120ms"
+    >
+      Συχνές <em class="italic text-champagne">ερωτήσεις</em>
+    </h1>
+    <p
+      class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+      data-reveal
+      style="--reveal-delay:220ms"
+    >
+      Ό,τι χρειάζεται να ξέρετε πριν την επίσκεψή σας. Αν λείπει κάτι,
+      γράψτε μας — απαντάμε μέσα σε μια εργάσιμη.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 pb-28 lg:px-8">
+    <h2 class="eyebrow mt-8" data-reveal>Κλείσιμο ραντεβού & γενικά</h2>
+    <div class="mt-6 border-b border-ink/15">
+      {
+        generalFaqs.map((item) => (
+          <details class="group border-t border-ink/15 py-5">
+            <summary class="flex cursor-pointer list-none items-baseline justify-between gap-4 font-sans text-[1.05rem] font-medium text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+              {item.q}
+              <span class="text-xl font-light text-champagne transition-transform duration-300 group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="mt-3 font-sans text-sm leading-relaxed text-ink/70">
+              {item.a}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+
+    {
+      byTreatment.map((group) => (
+        <div>
+          <h2 class="eyebrow mt-16">{group.title}</h2>
+          <div class="mt-6 border-b border-ink/15">
+            {group.items.map((item) => (
+              <details class="group border-t border-ink/15 py-5">
+                <summary class="flex cursor-pointer list-none items-baseline justify-between gap-4 font-sans text-[1.05rem] font-medium text-ink marker:hidden [&::-webkit-details-marker]:hidden">
+                  {item.q}
+                  <span class="text-xl font-light text-champagne transition-transform duration-300 group-open:rotate-45" aria-hidden="true">+</span>
+                </summary>
+                <p class="mt-3 font-sans text-sm leading-relaxed text-ink/70">
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="border-t-2 border-champagne/40 bg-blush">
+    <div class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <div class="flex flex-col items-start gap-6" data-reveal>
+        <h2 class="font-display text-3xl font-light text-ink sm:text-4xl">
+          Έχετε άλλη απορία;
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-3 bg-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper transition-colors hover:bg-champagne"
+          >
+            Στείλτε μας μήνυμα <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a
+            href={site.treatwellUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-3 border border-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink transition-colors hover:border-champagne"
+          >
+            Κλείστε Ραντεβού <span aria-hidden="true">&nearr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

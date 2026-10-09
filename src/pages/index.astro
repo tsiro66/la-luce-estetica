@@ -5,12 +5,13 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import site from "../data/site.json";
 import home from "../data/home.json";
-import heroImage from "../assets/bg-image.jpg";
+import heroImage from "../assets/site/hero-room.jpg";
+import receptionImage from "../assets/site/reception.jpg";
 
 const { hero, marquee, featured, studioTeaser, booking } = home;
 
 const treatments = (
-  await getCollection("treatments", ({ data }) => data.featured)
+  await getCollection("treatments", ({ data }) => data.bestseller)
 ).sort((a, b) => a.data.order - b.data.order);
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -23,18 +24,20 @@ export const prerender = true;
   <!-- ============ HERO ============ -->
   <section class="relative flex min-h-svh items-end overflow-hidden bg-ink">
     {
-      hero.image ? (
-        <img
-          src={hero.image}
-          alt="Studio hero image"
-          loading="eager"
-          fetchpriority="high"
+      hero.video ? (
+        <video
+          src={hero.video}
+          autoplay
+          muted
+          loop
+          playsinline
+          poster={heroImage.src}
           class="absolute inset-0 h-full w-full object-cover"
-        />
+        ></video>
       ) : (
         <Image
           src={heroImage}
-          alt="Client relaxing on a white treatment couch at the studio"
+          alt="Χώρος περιποίησης La Luce Estetica"
           widths={[768, 1280, 1920, 2400]}
           sizes="100vw"
           quality={82}
@@ -45,7 +48,7 @@ export const prerender = true;
       )
     }
     <div
-      class="absolute inset-0 bg-linear-to-t from-ink/20 via-ink/30 to-ink/40"
+      class="absolute inset-0 bg-linear-to-t from-ink/25 via-ink/40 to-ink/50"
       aria-hidden="true"
     >
     </div>
@@ -113,7 +116,9 @@ export const prerender = true;
                   {item}
                 </span>
                 <span class="text-champagne" aria-hidden="true">
-                  ✳
+                  <svg viewBox="0 0 12 12" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">
+                    <path d="M6 0v12M0 6h12M1.5 1.5l9 9M10.5 1.5l-9 9" stroke-linecap="round"></path>
+                  </svg>
                 </span>
               </li>
             ))}
@@ -151,7 +156,7 @@ export const prerender = true;
         {
           treatments.map((t, i) => (
             <a
-              href="/services"
+              href={`/services/${t.id}`}
               class="group grid grid-cols-1 gap-3 border-t border-ink/15 py-8 transition-colors duration-300 hover:bg-blush sm:py-10 md:grid-cols-12 md:items-baseline md:gap-4"
               data-reveal
               style={`--reveal-delay:${i * 80}ms`}
@@ -169,7 +174,7 @@ export const prerender = true;
                 </span>
               </span>
               <span class="font-sans text-sm uppercase tabular-nums text-ink/50 md:col-span-3 md:pr-4 md:text-right">
-                {t.data.duration} — €{t.data.price}
+                {t.data.duration}
               </span>
             </a>
           ))
@@ -227,11 +232,14 @@ export const prerender = true;
                   class="absolute inset-0 h-full w-full object-cover"
                 />
               ) : (
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <span class="font-sans text-[0.65rem] uppercase tracking-[0.25em] text-champagne">
-                    {studioTeaser.imagePlaceholder}
-                  </span>
-                </div>
+                <Image
+                  src={receptionImage}
+                  alt="Υποδοχή La Luce Estetica"
+                  widths={[768, 1280]}
+                  sizes="(min-width: 1280px) 800px, 100vw"
+                  quality={80}
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
               )
             }
           </div>

@@ -1,18 +1,18 @@
 {
   "services": {
-    "title": "Services",
-    "note": "The full treatment menu with descriptions, durations, and pricing will live on this page."
+    "title": "Υπηρεσίες",
+    "note": "Το πλήρες μενού θεραπειών με περιγραφές, διάρκειες και προετοιμασία."
   },
   "studio": {
-    "title": "Studio",
-    "note": "Photography and a short story about the clinic space and its equipment will live on this page."
+    "title": "Ο Χώρος",
+    "note": "Φωτογραφίες και η ιστορία του χώρου και των μηχανημάτων μας."
   },
   "faq": {
-    "title": "FAQ",
-    "note": "Answers to common questions about treatments, preparation, and booking will live on this page."
+    "title": "Συχνές Ερωτήσεις",
+    "note": "Απαντήσεις σε συνηθισμένες ερωτήσεις για θεραπείες, προετοιμασία και κλείσιμο ραντεβού."
   },
   "contact": {
-    "title": "Contact",
-    "note": "Contact details, opening hours, directions, and a booking link will live on this page."
+    "title": "Επικοινωνία",
+    "note": "Στοιχεία επικοινωνίας, ωράριο, πρόσβαση και σύνδεσμος κλεισίματος ραντεβού."
   }
 }

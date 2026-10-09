@@ -43,16 +43,20 @@ Whenever a commit lands on the branch, your hosting provider rebuilds the site a
 | CMS collection    | File / folder               | Controls                                            |
 | :---------------- | :-------------------------- | :-------------------------------------------------- |
 | Site Settings     | `src/data/site.json`        | Brand name, wordmark, nav, Treatwell URL, footer, SEO defaults |
-| Home Page         | `src/data/home.json`        | Hero, marquee, featured-section copy, studio teaser, booking banner |
-| Placeholder Pages | `src/data/pages.json`       | Titles & notes of Services / Studio / FAQ           |
+| Home Page         | `src/data/home.json`        | Hero, marquee, best-sellers section copy, studio teaser, booking banner |
+| Page Meta         | `src/data/pages.json`       | Titles & notes of Services / Studio / FAQ / Contact |
 | Contact Page      | `src/data/contact.json`     | Contact page copy, form labels, success/error messages |
-| Treatments        | `src/content/treatments/`   | One Markdown file per treatment (name, category, duration, price, order, featured, description) |
+| Treatments        | `src/content/treatments/`   | One Markdown file per treatment (SEO title, subtitle, category, duration, bestseller, description, problems, benefits, before/after, FAQ, general info) |
 | Media             | `public/uploads/`           | Uploaded images, served from `/uploads/...`         |
 
 The CMS field configuration lives in [.pages.yml](./.pages.yml). Keep it in sync whenever the data files change shape.
 
 ### Notes
 
-- Hero & studio-teaser images: leaving the image field empty falls back to the built-in placeholder art.
-- Treatments: `order` controls listing position, `featured: true` items appear on the homepage.
-- Treatment descriptions (Markdown body) are used by the Services page.
+- Hero: set `hero.video` in `home.json` to an mp4/webm URL to replace the photo with an autoplaying muted loop (client video pending).
+- Treatments: `order` controls position within its category, `bestseller: true` items appear in the homepage Best Sellers section.
+- Treatment pages live at `/services/{slug}` (one static page per treatment, 34 total).
+- The laser, wax and brow region menus live in `src/data/services-menu.json` (not CMS-editable).
+- The 360° virtual tour scenes live in `src/assets/tour/` and are wired in `src/pages/studio.astro`; add a scene by dropping an equirectangular JPEG there and adding it to `tourScenes`.
+- Prices are intentionally omitted — booking goes through Treatwell.
+- The site is in Greek (`lang="el"`); fonts (Playfair Display, Commissioner) fully support Greek.

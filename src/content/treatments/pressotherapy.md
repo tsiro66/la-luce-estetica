@@ -1,10 +1,13 @@
 ---
-title: Pressotherapy
-category: Lymphatic Drainage
-duration: 40 min
-price: 60
-order: 4
-featured: true
+title: "Pressotherapy"
+pageTitle: "Pressotherapy — Λεμφική Αποστράγγιση Σώματος στο Χαλάνδρι"
+subtitle: "Ξεκούραστα πόδια και αποβολή τοξινών."
+category: "Σώμα"
+duration: "30 λεπτά"
+order: 8
+
+problems:
+  - "Κατακράτηση υγρών, πρηξίματα & φλεβική στάση."
 ---
 
-Placeholder description — a short paragraph about pressotherapy: pneumatic lymphatic drainage, its benefits for circulation and recovery, and what a session involves. This text will appear on the Services page.
+Ειδική μπότα συμπίεσης αέρα που ασκεί διαβαθμισμένη πίεση στα κάτω άκρα, ενεργοποιώντας τη λεμφική και φλεβική κυκλοφορία.

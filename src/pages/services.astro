@@ -1,11 +1,147 @@
 ---
-import PlaceholderPage from "../components/PlaceholderPage.astro";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import site from "../data/site.json";
 import pages from "../data/pages.json";
+import servicesMenu from "../data/services-menu.json";
 
-const page = pages.services;
+type Treatment = Awaited<ReturnType<typeof getCollection>>["treatments"][number];
+
+const treatments = await getCollection("treatments");
+const categories = ["Αποτρίχωση", "Πρόσωπο", "Μασάζ", "Σώμα"];
+
+const grouped = categories.map((category) => ({
+  category,
+  items: treatments
+    .filter((t) => t.data.category === category)
+    .sort((a, b) => a.data.order - b.data.order),
+}));
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 export const prerender = true;
-
 ---
 
-<PlaceholderPage title={page.title} note={page.note} />
+<Layout
+  title={`${pages.services.title} — ${site.siteName}`}
+  description={site.seo.defaultDescription}
+>
+  <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
+    <p class="eyebrow" data-reveal>La Luce Estetica & Skin Clinic</p>
+    <h1
+      class="mt-4 max-w-3xl font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+      data-reveal
+      style="--reveal-delay:120ms"
+    >
+      Υπηρεσίες <em class="italic text-champagne">θεραπειών</em>
+    </h1>
+    <p
+      class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+      data-reveal
+      style="--reveal-delay:220ms"
+    >
+      Το πλήρες μενού μας — αποτρίχωση, θεραπείες προσώπου, μασάζ και θεραπείες
+      σώματος, με μηχανήματα τελευταίας τεχνολογίας για γυναίκες και άνδρες.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
+    {
+      grouped.map((group) => (
+        <div class="border-t-2 border-champagne/40 pt-10 mt-16 first:mt-8" id={`cat-${grouped.indexOf(group)}`}>
+          <div class="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+            <h2 class="font-display text-3xl font-light text-ink sm:text-4xl">
+              {group.category}
+            </h2>
+            <span class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums">
+              {pad(group.items.length)} θεραπείες
+            </span>
+          </div>
+          <div class="border-b border-ink/15">
+            {group.items.map((t) => (
+              <a
+                href={`/services/${t.id}`}
+                class="group grid grid-cols-1 gap-3 border-t border-ink/15 py-7 transition-colors duration-300 hover:bg-blush sm:py-8 md:grid-cols-12 md:items-baseline md:gap-4"
+              >
+                <span class="font-sans text-xs uppercase tracking-[0.22em] text-champagne md:col-span-3 md:pl-4">
+                  {t.data.duration}
+                </span>
+                <span class="font-display text-xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-2xl md:col-span-6">
+                  {t.data.title}
+                  <span class="ml-3 inline-block text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">
+                    &nearr;
+                  </span>
+                </span>
+                <span class="font-sans text-xs uppercase tracking-[0.2em] text-ink/40 md:col-span-3 md:pr-4 md:text-right">
+                  {t.data.bestseller ? "Best Seller — " : ""}Περισσότερα
+                </span>
+              </a>
+            ))}
+          </div>
+
+          {group.category === "Αποτρίχωση" && (
+            <div class="mt-12 space-y-10">
+              <div>
+                <h3 class="eyebrow">Laser Alexandrite — Περιοχές & Τιμολόγηση ανά συνεδρία</h3>
+                <ul class="mt-6 grid gap-x-10 gap-y-4 border-b border-ink/15 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+                  {servicesMenu.laser.map((area) => (
+                    <li class="border-t border-ink/10 pt-3">
+                      <p class="font-sans text-sm font-medium text-ink">{area.name}</p>
+                      <p class="mt-1 font-sans text-xs text-ink/50">{area.duration}{area.audience ? ` — ${area.audience}` : ""}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="grid gap-10 sm:grid-cols-2">
+                <div>
+                  <h3 class="eyebrow">Αποτρίχωση με Κερί & Κλωστή</h3>
+                  <ul class="mt-6 space-y-3">
+                    {servicesMenu.wax.map((area) => (
+                      <li class="flex items-baseline justify-between gap-4 border-t border-ink/10 pt-3">
+                        <span class="font-sans text-sm font-medium text-ink">{area.name}</span>
+                        <span class="font-sans text-xs text-ink/50">{area.duration}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 class="eyebrow">Φρύδια</h3>
+                  <ul class="mt-6 space-y-3">
+                    {servicesMenu.brows.map((area) => (
+                      <li class="flex items-baseline justify-between gap-4 border-t border-ink/10 pt-3">
+                        <span class="font-sans text-sm font-medium text-ink">{area.name}</span>
+                        <span class="font-sans text-xs text-ink/50">{area.duration}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="border-t-2 border-champagne/40 bg-blush">
+    <div class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <div class="flex flex-col items-start gap-6" data-reveal>
+        <h2 class="font-display text-3xl font-light text-ink sm:text-4xl">
+          Δεν ξέρετε από πού να ξεκινήσετε;
+        </h2>
+        <p class="max-w-xl font-sans text-base leading-relaxed text-ink/70">
+          Κλείστε Διαγνωστικό Προσώπου ή ρωτήστε μας — θα σας προτείνουμε το
+          κατάλληλο πλάνο θεραπειών.
+        </p>
+        <a
+          href={site.treatwellUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper transition-colors hover:bg-champagne"
+        >
+          Κλείστε Ραντεβού Τώρα <span aria-hidden="true">&nearr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system,
-    sans-serif;
+  --font-display: "Noto Serif Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Commissioner", "Noto Sans", system-ui, -apple-system, sans-serif;
 
   --color-ink: #1c1917;
   --color-paper: #faf9f7;
@@ -64,7 +63,7 @@
     @apply font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-champagne;
   }
 
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 0;
     transform: translateY(1.75rem);
     transition:
@@ -73,10 +72,11 @@
     transition-delay: var(--reveal-delay, 0ms);
   }
 
-  [data-reveal].is-visible {
+  .js [data-reveal].is-visible {
     opacity: 1;
     transform: none;
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,7 +84,7 @@
     scroll-behavior: auto;
   }
 
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;

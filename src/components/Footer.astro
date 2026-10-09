@@ -28,7 +28,7 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     </div>
 
     <nav class="md:col-span-2" aria-label="Footer">
-      <h3 class="footer-heading">Explore</h3>
+      <h3 class="footer-heading">{site.footer.headings.explore}</h3>
       <ul class="mt-5 space-y-3">
         {
           site.nav.map((link) => (
@@ -43,12 +43,15 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     </nav>
 
     <div class="md:col-span-2">
-      <h3 class="footer-heading">Visit</h3>
+      <h3 class="footer-heading">{site.footer.headings.visit}</h3>
       <address
         class="mt-5 space-y-1 font-sans text-sm not-italic leading-relaxed text-ink/60"
       >
-        {site.footer.address.street}<br />
-        {site.footer.address.city}<br />
+        <a href={site.footer.mapUrl} target="_blank" rel="noopener noreferrer" class="footer-link">
+          {site.footer.address.street}<br />
+          {site.footer.address.city}
+        </a>
+        <br />
         <a href={`mailto:${site.footer.email}`} class="footer-link">
           {site.footer.email}
         </a>
@@ -58,7 +61,7 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     </div>
 
     <div class="md:col-span-3">
-      <h3 class="footer-heading">Hours</h3>
+      <h3 class="footer-heading">{site.footer.headings.hours}</h3>
       <dl class="mt-5 space-y-2 font-sans text-sm text-ink/60">
         {
           site.footer.hours.map((row) => (
@@ -85,7 +88,9 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
       class="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 font-sans text-[0.65rem] uppercase tracking-[0.2em] text-ink/40 sm:flex-row sm:items-center sm:justify-between lg:px-8"
     >
       <p>&copy; {year} {site.footer.copyright}</p>
-      <p>{site.footer.note}</p>
+      {
+        site.footer.note ? <p>{site.footer.note}</p> : null
+      }
     </div>
   </div>
 </footer>

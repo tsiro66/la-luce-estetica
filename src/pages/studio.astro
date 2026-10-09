@@ -1,11 +1,312 @@
 ---
-import PlaceholderPage from "../components/PlaceholderPage.astro";
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import site from "../data/site.json";
 import pages from "../data/pages.json";
 
-const page = pages.studio;
+import heroRoom from "../assets/site/hero-room.jpg";
+import receptionRoom from "../assets/site/reception.jpg";
+import facialRoom from "../assets/site/room-facial.jpg";
+import facialRoom2 from "../assets/site/room-facial-2.jpg";
+import couplesRoom from "../assets/site/room-couples.jpg";
+import bodyRoom from "../assets/site/room-body.jpg";
+import machineDetail from "../assets/site/machine-detail.jpg";
+import storefront from "../assets/site/storefront.jpg";
+
+import tourReception from "../assets/tour/reception.jpg";
+import tourWaiting from "../assets/tour/waiting.jpg";
+import tourTreatment from "../assets/tour/treatment-room.jpg";
+import tourZen from "../assets/tour/zen-room.jpg";
+import tourSpa from "../assets/tour/spa-room.jpg";
+import tourMassage from "../assets/tour/massage-room.jpg";
+
+const tourScenes = [
+  { id: "reception", title: "Υποδοχή", src: tourReception.src },
+  { id: "waiting", title: "Χώρος Αναμονής", src: tourWaiting.src },
+  { id: "treatment", title: "Αίθουσα Θεραπειών", src: tourTreatment.src },
+  { id: "zen", title: "Χώρος Μασάζ — Ζεν", src: tourZen.src },
+  { id: "spa", title: "Χώρος Spa", src: tourSpa.src },
+  { id: "massage", title: "Αίθουσα Μασάζ", src: tourMassage.src },
+];
 
 export const prerender = true;
-
 ---
 
-<PlaceholderPage title={page.title} note={page.note} />
+<Layout
+  title={`${pages.studio.title} — ${site.siteName}`}
+  description="Γνωρίστε τον χώρο της La Luce Estetica & Skin Clinic στο Χαλάνδρι — αίθουσες θεραπειών, μηχανήματα τελευταίας τεχνολογίας και εικονική περιήγηση 360°."
+>
+  <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
+    <p class="eyebrow" data-reveal>La Luce Estetica & Skin Clinic</p>
+    <h1
+      class="mt-4 max-w-3xl font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+      data-reveal
+      style="--reveal-delay:120ms"
+    >
+      Ο <em class="italic text-champagne">χώρος</em> μας
+    </h1>
+    <p
+      class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+      data-reveal
+      style="--reveal-delay:220ms"
+    >
+      Στο κέντρο του Χαλανδρίου, σχεδιασμένος για να σας κάνει να νιώσετε
+      άνετα από την πρώτη στιγμή — καθαροί, ήσυχοι χώροι, κορυφαία
+      μηχανήματα και λεπτομέρειες που φροντίζουν.
+    </p>
+  </section>
+
+  <!-- Gallery -->
+  <section class="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+    <div class="grid gap-4 md:grid-cols-3">
+      <!-- Feature tile fills 2×2 — h-full stretches to the two aspect-[4/3]
+           rows set by the tiles beside it, so all six crops align with no gaps -->
+      <div class="md:col-span-2 md:row-span-2" data-reveal>
+        <Image
+          src={heroRoom}
+          alt="Κύρια αίθουσα θεραπειών με δύο κρεβάτια και προϊόντα περιποίησης"
+          widths={[768, 1280, 1920]}
+          sizes="(min-width: 1024px) 66vw, 100vw"
+          quality={80}
+          class="aspect-[4/3] h-full w-full object-cover md:aspect-auto"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={facialRoom}
+          alt="Αίθουσα θεραπειών προσώπου"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={couplesRoom}
+          alt="Χώρος massage για δύο άτομα"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={receptionRoom}
+          alt="Υποδοχή με λογότυπο La Luce"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={facialRoom2}
+          alt="Αίθουσα προσώπου με βάση προϊόντων"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={storefront}
+          alt="Είσοδος La Luce Estetica επί της οδού Πλατάνου"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Virtual tour -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"
+    defer
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+  />
+  <section class="border-y border-ink/10 bg-blush" id="virtual-tour">
+    <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+      <p class="eyebrow" data-reveal>Εικονική περιήγηση 360°</p>
+      <h2
+        class="mt-4 font-display text-4xl font-light leading-[1.05] text-ink sm:text-5xl"
+        data-reveal
+        style="--reveal-delay:120ms"
+      >
+        Δείτε τον χώρο <em class="italic text-champagne">από μέσα</em>
+      </h2>
+      <p
+        class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+        data-reveal
+        style="--reveal-delay:220ms"
+      >
+        Επιλέξτε δωμάτιο, σύρετε με το ποντίκι για να κοιτάξετε γύρω σας.
+      </p>
+
+      <div class="relative mt-10" data-reveal style="--reveal-delay:300ms">
+        <div
+          id="tour-viewer"
+          class="aspect-[16/9] w-full border border-sand bg-ink"
+        >
+        </div>
+        <div
+          id="tour-scenes"
+          class="mt-4 flex flex-wrap gap-3"
+          role="tablist"
+          aria-label="Χώροι εικονικής περιήγησης"
+        >
+          {
+            tourScenes.map((scene, i) => (
+              <button
+                type="button"
+                data-scene={scene.id}
+                class="tour-scene cursor-pointer border border-ink/20 bg-paper px-5 py-2.5 font-sans text-[0.7rem] font-medium uppercase tracking-[0.2em] text-ink transition-colors hover:border-champagne data-[active]:border-ink data-[active]:bg-ink data-[active]:text-paper"
+                aria-selected={i === 0 ? "true" : "false"}
+                data-active={i === 0 ? "" : undefined}
+              >
+                {scene.title}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology -->
+  <section class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-4" data-reveal>
+        <p class="eyebrow">Η Τεχνολογία μας</p>
+        <h2
+          class="mt-4 font-display text-3xl font-light leading-[1.05] text-ink sm:text-4xl"
+        >
+          Μηχανήματα <em class="italic text-champagne">τελευταίας γενιάς</em>
+        </h2>
+        <p
+          class="mt-6 font-sans text-base leading-relaxed text-ink/70"
+        >
+          Λειτουργούμε με πιστοποιημένα ιατροτεχνολογικά συστήματα — Laser
+          Alexandrite Quanta Light A EVO, LPG Endermologie, Endospheres,
+          HIEMS, Cavitation, RF και Pressotherapy — για ασφάλεια και
+          αποτελεσματικότητα που τεκμηριώνεται.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 self-start md:col-span-8">
+        <div class="aspect-[4/3]" data-reveal>
+          <Image
+            src={bodyRoom}
+            alt="Αίθουσα θεραπειών σώματος με μηχανήματα"
+            widths={[640, 1024]}
+            sizes="(min-width: 1280px) 400px, 100vw"
+            quality={80}
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div class="aspect-[4/3]" data-reveal>
+          <Image
+            src={machineDetail}
+            alt="Σταθμός ελέγχου μηχανήματος θεραπειών"
+            widths={[640, 1024]}
+            sizes="(min-width: 1280px) 400px, 100vw"
+            quality={80}
+            class="h-full w-full object-cover object-[center_72%]"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hygiene -->
+  <section class="border-t border-ink/10 bg-blush">
+    <div class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <div class="max-w-3xl" data-reveal>
+        <p class="eyebrow">Υγιεινή & Πρότυπα</p>
+        <h2 class="mt-4 font-display text-3xl font-light text-ink sm:text-4xl">
+          Φροντίδα σε <em class="italic text-champagne">κάθε λεπτομέρεια</em>
+        </h2>
+        <p class="mt-6 font-sans text-base leading-relaxed text-ink/70">
+          Πρωτόκολλα καθαρισμού και αποστείρωσης πριν και μετά από κάθε
+          συνεδρία, μία σακούλα φροντίδας ανά πελάτη, καθαρά λευκά ειδών σε
+          κάθε επίσκεψη και χώροι που αερίζονται συνεχώς. Τα προϊόντα μας
+          επιλέγονται από επώνυμους, πιστοποιημένους οίκους.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t-2 border-champagne/40 bg-ink text-paper">
+    <div class="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <div class="flex flex-col items-start gap-6" data-reveal>
+        <h2 class="font-display text-3xl font-light sm:text-4xl">
+          Ελάτε να μας γνωρίσετε από κοντά
+        </h2>
+        <a
+          href={site.treatwellUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-paper px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink transition-colors hover:bg-sand"
+        >
+          Κλείστε Ραντεβού <span aria-hidden="true">&nearr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ tourScenes }}>
+  (function () {
+    function init() {
+      if (typeof pannellum === "undefined") {
+        setTimeout(init, 200);
+        return;
+      }
+      const viewerEl = document.getElementById("tour-viewer");
+      const buttons = document.querySelectorAll(".tour-scene");
+      if (!viewerEl) return;
+
+      const scenesConfig = {};
+      tourScenes.forEach((scene) => {
+        scenesConfig[scene.id] = {
+          type: "equirectangular",
+          panorama: scene.src,
+          title: scene.title,
+        };
+      });
+
+      const viewer = pannellum.viewer(viewerEl, {
+        // NOTE: no top-level `type` here — pannellum's JS API merges
+        // top-level keys over scene keys, so `type: "tour"` would
+        // override every scene's "equirectangular". Tour mode is implied
+        // by the presence of `scenes`.
+        default: {
+          firstScene: tourScenes[0].id,
+          autoLoad: true,
+          sceneFadeDuration: 600,
+          mouseZoom: false,
+          hfov: 120,
+          maxHfov: 150,
+        },
+        scenes: scenesConfig,
+      });
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          buttons.forEach((b) => delete b.dataset.active);
+          button.dataset.active = "";
+          viewer.loadScene(button.dataset.scene);
+        });
+      });
+    }
+
+    init();
+  })();
+</script>
