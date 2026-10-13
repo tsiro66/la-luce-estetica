@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://la-luce-estetica.theogr99.workers.dev/sitemap-index.xml
+Sitemap: https://la-luce-estetica.pages.dev/sitemap-index.xml
