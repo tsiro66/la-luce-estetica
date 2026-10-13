@@ -44,8 +44,8 @@ const treatmentLabel = (input: string) =>
  */
 const row = (label: string, value: string) =>
   `<tr>
-    <td style="padding:8px 0;font:400 11px/1.4 Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#b8977e;">${label}</td>
-    <td style="padding:8px 0 8px 24px;font:300 15px/1.5 Georgia,'Times New Roman',serif;color:#1c1917;">${value}</td>
+    <td style="padding:8px 0 8px 32px;font:400 11px/1.4 Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#b8977e;">${label}</td>
+    <td style="padding:8px 32px 8px 24px;font:300 15px/1.5 Georgia,'Times New Roman',serif;color:#1c1917;vertical-align:top;">${value}</td>
   </tr>`;
 
 const schema = z.object({
