@@ -13,20 +13,12 @@ import bodyRoom from "../assets/site/room-body.jpg";
 import machineDetail from "../assets/site/machine-detail.jpg";
 import storefront from "../assets/site/storefront.jpg";
 
-import tourReception from "../assets/tour/reception.jpg";
-import tourWaiting from "../assets/tour/waiting.jpg";
-import tourTreatment from "../assets/tour/treatment-room.jpg";
-import tourZen from "../assets/tour/zen-room.jpg";
-import tourSpa from "../assets/tour/spa-room.jpg";
-import tourMassage from "../assets/tour/massage-room.jpg";
+import tourFacial from "../assets/tour/facial-room.jpg";
+import tourBody from "../assets/tour/body-room.jpg";
 
 const tourScenes = [
-  { id: "reception", title: "Υποδοχή", src: tourReception.src },
-  { id: "waiting", title: "Χώρος Αναμονής", src: tourWaiting.src },
-  { id: "treatment", title: "Αίθουσα Θεραπειών", src: tourTreatment.src },
-  { id: "zen", title: "Χώρος Μασάζ — Ζεν", src: tourZen.src },
-  { id: "spa", title: "Χώρος Spa", src: tourSpa.src },
-  { id: "massage", title: "Αίθουσα Μασάζ", src: tourMassage.src },
+  { id: "facial", title: "Αίθουσα Προσώπου", src: tourFacial.src },
+  { id: "body", title: "Αίθουσα Θεραπειών Σώματος", src: tourBody.src },
 ];
 
 export const prerender = true;
@@ -124,15 +116,8 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Virtual tour -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"
-    defer
-  ></script>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
-  />
+  <!-- Virtual tour — pannellum is loaded on demand from the init script
+       below, so it works under the ClientRouter on client-side navigations -->
   <section class="border-y border-ink/10 bg-blush" id="virtual-tour">
     <div class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
       <p class="eyebrow" data-reveal>Εικονική περιήγηση 360°</p>
@@ -264,49 +249,92 @@ export const prerender = true;
 
 <script define:vars={{ tourScenes }}>
   (function () {
-    function init() {
-      if (typeof pannellum === "undefined") {
-        setTimeout(init, 200);
+    const PANNELLUM = "https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build";
+
+    // The ClientRouter re-executes this inline script on every navigation
+    // into /studio; everything here is idempotent / guarded.
+    function ensurePannellum(cb) {
+      if (typeof pannellum !== "undefined") {
+        cb();
         return;
       }
+      if (!document.querySelector("link[data-pannellum-css]")) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = PANNELLUM + "/pannellum.css";
+        link.setAttribute("data-pannellum-css", "");
+        document.head.append(link);
+      }
+      let script = document.querySelector(
+        "script[data-pannellum-js]",
+      );
+      if (!script) {
+        script = document.createElement("script");
+        script.src = PANNELLUM + "/pannellum.js";
+        script.setAttribute("data-pannellum-js", "");
+        document.head.append(script);
+      }
+      script.addEventListener("load", cb, { once: true });
+    }
+
+    function init() {
       const viewerEl = document.getElementById("tour-viewer");
       const buttons = document.querySelectorAll(".tour-scene");
-      if (!viewerEl) return;
+      if (!viewerEl || viewerEl.dataset.tourInit) return;
+      viewerEl.dataset.tourInit = "1";
 
-      const scenesConfig = {};
-      tourScenes.forEach((scene) => {
-        scenesConfig[scene.id] = {
-          type: "equirectangular",
-          panorama: scene.src,
-          title: scene.title,
-        };
-      });
+      ensurePannellum(() => {
+        // Element may have been swapped out while the CDN script loaded.
+        if (!viewerEl.isConnected) return;
 
-      const viewer = pannellum.viewer(viewerEl, {
-        // NOTE: no top-level `type` here — pannellum's JS API merges
-        // top-level keys over scene keys, so `type: "tour"` would
-        // override every scene's "equirectangular". Tour mode is implied
-        // by the presence of `scenes`.
-        default: {
-          firstScene: tourScenes[0].id,
-          autoLoad: true,
-          sceneFadeDuration: 600,
-          mouseZoom: false,
-          hfov: 120,
-          maxHfov: 150,
-        },
-        scenes: scenesConfig,
-      });
+        const scenesConfig = {};
+        tourScenes.forEach((scene) => {
+          scenesConfig[scene.id] = {
+            type: "equirectangular",
+            panorama: scene.src,
+            title: scene.title,
+          };
+        });
 
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-          buttons.forEach((b) => delete b.dataset.active);
-          button.dataset.active = "";
-          viewer.loadScene(button.dataset.scene);
+        const viewer = pannellum.viewer(viewerEl, {
+          // NOTE: no top-level `type` here — pannellum's JS API merges
+          // top-level keys over scene keys, so `type: "tour"` would
+          // override every scene's "equirectangular". Tour mode is implied
+          // by the presence of `scenes`.
+          default: {
+            firstScene: tourScenes[0].id,
+            autoLoad: true,
+            sceneFadeDuration: 600,
+            mouseZoom: false,
+            hfov: 120,
+            maxHfov: 150,
+          },
+          scenes: scenesConfig,
+        });
+        window.__tourViewer = viewer;
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            buttons.forEach((b) => delete b.dataset.active);
+            button.dataset.active = "";
+            viewer.loadScene(button.dataset.scene);
+          });
         });
       });
     }
 
+    // Destroy the pannellum viewer before leaving /studio, otherwise it
+    // keeps rendering into detached DOM. Registered once, reads the live
+    // instance from window (document-level listeners survive swaps).
+    if (!window.__tourCleanupBound) {
+      window.__tourCleanupBound = true;
+      document.addEventListener("astro:before-swap", () => {
+        window.__tourViewer?.destroy();
+        window.__tourViewer = null;
+      });
+    }
+
     init();
+    document.addEventListener("astro:page-load", init);
   })();
 </script>

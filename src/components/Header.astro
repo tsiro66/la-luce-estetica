@@ -274,14 +274,34 @@ const subLetters = site.wordmark.sub.split("");
 <script>
   import site from "../data/site.json";
 
-  const header = document.getElementById("site-header");
-  const toggle = document.getElementById("menu-toggle");
-  const label = toggle?.querySelector("[data-label]");
-  const menu = document.getElementById("mobile-menu");
+  // DOM refs are re-queried on every call so they stay valid after the
+  // ClientRouter swaps in a fresh <body> on client-side navigation.
+  function refs() {
+    return {
+      header: document.getElementById("site-header"),
+      toggle: document.getElementById("menu-toggle"),
+      label: document.querySelector("#menu-toggle [data-label]"),
+      menu: document.getElementById("mobile-menu"),
+    };
+  }
+
+  function setMenu(open: boolean) {
+    const { header, toggle, label, menu } = refs();
+    toggle?.setAttribute("aria-expanded", String(open));
+    menu?.classList.toggle("is-open", open);
+    menu?.setAttribute("aria-hidden", String(!open));
+    header?.toggleAttribute("data-menu-open", open);
+    if (open) header?.removeAttribute("data-hidden");
+    document.body.classList.toggle("overflow-hidden", open);
+    if (label)
+      label.textContent = open ? site.menuLabels.close : site.menuLabels.open;
+  }
 
   let lastY = window.scrollY;
 
+  // Document/window-level listeners: attached once, read fresh refs per call.
   const onScroll = () => {
+    const { header, toggle } = refs();
     const y = window.scrollY;
     header?.toggleAttribute("data-scrolled", y > 24);
 
@@ -295,29 +315,35 @@ const subLetters = site.wordmark.sub.split("");
     }
     lastY = y;
   };
-  onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  function setMenu(open: boolean) {
-    toggle?.setAttribute("aria-expanded", String(open));
-    menu?.classList.toggle("is-open", open);
-    menu?.setAttribute("aria-hidden", String(!open));
-    header?.toggleAttribute("data-menu-open", open);
-    if (open) header?.removeAttribute("data-hidden");
-    document.body.classList.toggle("overflow-hidden", open);
-    if (label) label.textContent = open ? site.menuLabels.close : site.menuLabels.open;
-  }
-
-  toggle?.addEventListener("click", () =>
-    setMenu(toggle.getAttribute("aria-expanded") !== "true"),
-  );
-
   document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      toggle?.getAttribute("aria-expanded") === "true"
-    ) {
-      setMenu(false);
+    if (event.key === "Escape") {
+      const { toggle } = refs();
+      if (toggle?.getAttribute("aria-expanded") === "true") setMenu(false);
     }
   });
+
+  function bindToggle() {
+    const { toggle } = refs();
+    if (toggle && !toggle.dataset.menuBound) {
+      toggle.dataset.menuBound = "1";
+      toggle.addEventListener("click", () =>
+        setMenu(toggle.getAttribute("aria-expanded") !== "true"),
+      );
+    }
+  }
+
+  // Close an open mobile menu before a client-side swap, or body keeps
+  // overflow-hidden and the next page can't scroll.
+  document.addEventListener("astro:before-swap", () => setMenu(false));
+
+  document.addEventListener("astro:page-load", () => {
+    lastY = window.scrollY;
+    bindToggle();
+    onScroll();
+  });
+
+  bindToggle();
+  onScroll();
 </script>
