@@ -1,23 +1,22 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import netlify from '@astrojs/netlify';
+import cloudflare from '@astrojs/cloudflare';
 
 // @ts-check
 export default defineConfig({
-  // TODO: replace with the real domain once confirmed (custom or Netlify).
-  site: 'https://la-luce-estetica.netlify.app',
+  // TODO: replace with the real domain once confirmed (custom or Cloudflare).
+  site: 'https://la-luce-estetica.pages.dev',
   integrations: [sitemap()],
-  // Site pages stay prerendered/static; Netlify adapter exists so the
-  // Astro Action (src/actions/index.ts -> Resend enquiry email) can run
-  // as an on-demand server endpoint.
+  // Site pages stay prerendered/static; the Cloudflare adapter exists so the
+  // Astro Action (src/actions/index.ts -> Resend enquiry email) can run as an
+  // on-demand server endpoint.
   output: 'server',
-  adapter: netlify({
-    // Local deno 2.9.x rejects the `--allow-scripts` flag the Netlify edge
-    // dev server passes to `deno eval`, which crashes dev with an
-    // unhandled rejection. Edge-function emulation only powers edge
-    // middleware (none used here); actions run via the functions path.
-    devFeatures: { edgeFunctions: false },
+  adapter: cloudflare({
+    // Build-time (sharp) image optimization. Pages here are prerendered, so
+    // no on-demand image endpoint is needed; "passthrough" (the adapter
+    // default) would ship the full-resolution originals instead.
+    imageService: 'compile',
   }),
   vite: {
     plugins: [tailwindcss()],
