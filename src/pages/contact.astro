@@ -1,5 +1,4 @@
 ---
-import { actions, isInputError } from "astro:actions";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import site from "../data/site.json";
@@ -8,14 +7,19 @@ import home from "../data/home.json";
 
 const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
 
-const result = Astro.getActionResult(actions.sendEnquiry);
-const inputErrors = isInputError(result?.error) ? (result.error.fields ?? {}) : {};
-const sent = Boolean(result && !result.error);
-
-// Field-level error lookup: zod errors are arrays; Astro flattens them
-// into fields.{name} arrays when the action rejects with input errors.
-const errFor = (field: string) =>
-  inputErrors[field as keyof typeof inputErrors]?.[0] as string | undefined;
+// Classic form POST: the Pages Function (functions/api/contact.ts) replies
+// with 303 redirects to /contact?sent=1 (success) or /contact?err={field}
+// (validation or send failure). The site output is fully static, so there is
+// no runtime to read the params server-side — the banner / success panel are
+// prerendered hidden and the inline script below reveals them on
+// astro:page-load based on the query string. Copy stays in contact.json.
+const fieldErrors: Record<string, string> = {
+  name: contact.errors.name,
+  email: contact.errors.email,
+  phone: contact.errors.general,
+  treatment: contact.errors.treatment,
+  message: contact.errors.message,
+};
 
 const title = `${contact.eyebrow} — ${site.siteName}`;
 
@@ -113,160 +117,145 @@ const labelClass =
 
       <!-- ===== Form panel ===== -->
       <div class="order-1 lg:order-2 lg:col-span-7 lg:border-l lg:border-ink/10 lg:pl-14" data-reveal style="--reveal-delay:120ms">
-          {
-            sent ? (
-              <div class="py-8 text-center">
-                <p class="eyebrow">{contact.eyebrow}</p>
-                <h2 class="mt-4 font-display text-3xl font-light leading-[1.05] text-ink sm:text-4xl">
-                  {contact.success.titleStart}
+          <!-- Success panel — prerendered hidden, revealed by the inline
+               script when the URL carries ?sent=1. -->
+          <div id="sent-panel" hidden>
+            <div class="py-8 text-center">
+              <p class="eyebrow">{contact.eyebrow}</p>
+              <h2 class="mt-4 font-display text-3xl font-light leading-[1.05] text-ink sm:text-4xl">
+                {contact.success.titleStart}
 {" "}
-                  <em class="italic text-champagne">{contact.success.titleAccent}</em>
-                </h2>
-                <p class="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/60">
-                  {contact.success.body}
-                </p>
-                <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Button href="/" variant="outline-dark">{site.backHomeLabel}</Button>
-                  <Button href="/contact" variant="outline-dark">
-                    {contact.success.again}
-                  </Button>
+                <em class="italic text-champagne">{contact.success.titleAccent}</em>
+              </h2>
+              <p class="mx-auto mt-5 max-w-md font-sans text-base leading-relaxed text-ink/60">
+                {contact.success.body}
+              </p>
+              <div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+                <Button href="/" variant="outline-dark">{site.backHomeLabel}</Button>
+                <Button href="/contact" variant="outline-dark">
+                  {contact.success.again}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error banner — prerendered hidden, revealed with ?err={field}.
+               Field messages travel via data-errors ("send" falls back to
+               data-default). -->
+          <div
+            id="err-banner"
+            hidden
+            role="alert"
+            data-errors={JSON.stringify(fieldErrors)}
+            data-default={contact.errorBody}
+            class="mb-8 border border-ink/15 bg-paper px-5 py-4 font-sans text-sm text-ink/70"
+          >
+            <span class="font-medium uppercase tracking-[0.2em]">{contact.errorTitle}:</span>{" "}
+            <span id="err-msg">{contact.errorBody}</span>
+          </div>
+
+          <form id="enquiry-form" method="POST" action="/api/contact" novalidate>
+            <!-- Honeypot — visually hidden, ignored by humans -->
+            <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+              <label>
+                Company
+                <input type="text" name="company" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
+
+            <div class="grid grid-cols-1 gap-y-7 sm:gap-y-8">
+              <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
+                <div>
+                  <label for="cf-name" class={labelClass}>{contact.fields.name.label}</label>
+                  <input
+                    id="cf-name"
+                    type="text"
+                    name="name"
+                    required
+                    autocomplete="name"
+                    placeholder={contact.fields.name.placeholder}
+                    class={fieldClass}
+                  />
+                </div>
+
+                <div>
+                  <label for="cf-email" class={labelClass}>{contact.fields.email.label}</label>
+                  <input
+                    id="cf-email"
+                    type="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    placeholder={contact.fields.email.placeholder}
+                    class={fieldClass}
+                  />
                 </div>
               </div>
-            ) : (
-              <>
-                {result?.error && !isInputError(result.error) && (
-                  <p class="mb-8 border border-ink/15 bg-paper px-5 py-4 font-sans text-sm text-ink/70" role="alert">
-                    <span class="font-medium uppercase tracking-[0.2em]">{contact.errorTitle}:</span>{" "}
-                    {contact.errorBody}
-                    <span class="sr-only">{result.error.message}</span>
-                  </p>
-                )}
 
-                <form method="POST" action={actions.sendEnquiry} novalidate>
-                  <!-- Honeypot — visually hidden, ignored by humans -->
-                  <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-                    <label>
-                      Company
-                      <input type="text" name="company" tabindex="-1" autocomplete="off" />
-                    </label>
-                  </div>
+              <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
+                <div>
+                  <label for="cf-phone" class={labelClass}>{contact.fields.phone.label}</label>
+                  <input
+                    id="cf-phone"
+                    type="tel"
+                    name="phone"
+                    autocomplete="tel"
+                    placeholder={contact.fields.phone.placeholder}
+                    class={fieldClass}
+                  />
+                </div>
 
-                  <div class="grid grid-cols-1 gap-y-7 sm:gap-y-8">
-                    <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
-                      <div>
-                        <label for="cf-name" class={labelClass}>{contact.fields.name.label}</label>
-                        <input
-                          id="cf-name"
-                          type="text"
-                          name="name"
-                          required
-                          autocomplete="name"
-                          placeholder={contact.fields.name.placeholder}
-                          class:list={[fieldClass, inputErrors.name && "border-red-400/70"]}
-                          aria-invalid={Boolean(inputErrors.name)}
-                          aria-describedby={inputErrors.name ? "cf-name-error" : undefined}
-                        />
-                        {inputErrors.name && (
-                          <p id="cf-name-error" class="mt-2 font-sans text-xs text-red-500">{errFor("name") ?? contact.errors.name}</p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label for="cf-email" class={labelClass}>{contact.fields.email.label}</label>
-                        <input
-                          id="cf-email"
-                          type="email"
-                          name="email"
-                          required
-                          autocomplete="email"
-                          placeholder={contact.fields.email.placeholder}
-                          class:list={[fieldClass, inputErrors.email && "border-red-400/70"]}
-                          aria-invalid={Boolean(inputErrors.email)}
-                          aria-describedby={inputErrors.email ? "cf-email-error" : undefined}
-                        />
-                        {inputErrors.email && (
-                          <p id="cf-email-error" class="mt-2 font-sans text-xs text-red-500">{errFor("email") ?? contact.errors.email}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
-                      <div>
-                        <label for="cf-phone" class={labelClass}>{contact.fields.phone.label}</label>
-                        <input
-                          id="cf-phone"
-                          type="tel"
-                          name="phone"
-                          autocomplete="tel"
-                          placeholder={contact.fields.phone.placeholder}
-                          class={fieldClass}
-                        />
-                      </div>
-
-                      <div>
-                        <label for="cf-treatment" class={labelClass}>{contact.fields.treatment.label}</label>
-                        <div class="relative">
-                          <select
-                            id="cf-treatment"
-                            name="treatment"
-                            required
-                            class:list={[fieldClass, "appearance-none pr-8", inputErrors.treatment && "border-red-400/70"]}
-                            aria-invalid={Boolean(inputErrors.treatment)}
-                            aria-describedby={inputErrors.treatment ? "cf-treatment-error" : undefined}
-                          >
-                            <option value="-" class="text-ink/30">{contact.fields.treatment.placeholder}</option>
-                            {contact.fields.treatment.options.map((opt) => (
-                              <option value={opt} class="text-ink">{opt}</option>
-                            ))}
-                          </select>
-                          <svg
-                            class="pointer-events-none absolute right-1 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            aria-hidden="true"
-                          >
-                            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                        </div>
-                        {inputErrors.treatment && (
-                          <p id="cf-treatment-error" class="mt-2 font-sans text-xs text-red-500">{errFor("treatment") ?? contact.errors.treatment}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label for="cf-message" class={labelClass}>{contact.fields.message.label}</label>
-                      <textarea
-                        id="cf-message"
-                        name="message"
-                        required
-                        rows="5"
-                        placeholder={contact.fields.message.placeholder}
-                        class:list={[fieldClass, "min-h-28 resize-y", inputErrors.message && "border-red-400/70"]}
-                        aria-invalid={Boolean(inputErrors.message)}
-                        aria-describedby={inputErrors.message ? "cf-message-error" : undefined}
-                      />
-                      {inputErrors.message && (
-                        <p id="cf-message-error" class="mt-2 font-sans text-xs text-red-500">{errFor("message") ?? contact.errors.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div class="mt-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-                    <button
-                      type="submit"
-                      class="inline-flex items-center justify-center bg-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper transition-colors duration-300 hover:bg-champagne hover:text-white"
+                <div>
+                  <label for="cf-treatment" class={labelClass}>{contact.fields.treatment.label}</label>
+                  <div class="relative">
+                    <select
+                      id="cf-treatment"
+                      name="treatment"
+                      required
+                      class:list={[fieldClass, "appearance-none pr-8"]}
                     >
-                      {contact.submitLabel}
-                    </button>
-                    <p class="font-sans text-[0.6rem] uppercase tracking-[0.22em] text-ink/40">
-                      {contact.replyNote}
-                    </p>
+                      <option value="-" class="text-ink/30">{contact.fields.treatment.placeholder}</option>
+                      {contact.fields.treatment.options.map((opt) => (
+                        <option value={opt} class="text-ink">{opt}</option>
+                      ))}
+                    </select>
+                    <svg
+                      class="pointer-events-none absolute right-1 top-1/2 h-3 w-3 -translate-y-1/2 text-ink/40"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                   </div>
-                </form>
-              </>
-            )
-          }
+                </div>
+              </div>
+
+              <div>
+                <label for="cf-message" class={labelClass}>{contact.fields.message.label}</label>
+                <textarea
+                  id="cf-message"
+                  name="message"
+                  required
+                  rows="5"
+                  placeholder={contact.fields.message.placeholder}
+                  class:list={[fieldClass, "min-h-28 resize-y"]}
+                />
+              </div>
+            </div>
+
+            <div class="mt-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center bg-ink px-8 py-4 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper transition-colors duration-300 hover:bg-champagne hover:text-white"
+              >
+                {contact.submitLabel}
+              </button>
+              <p class="font-sans text-[0.6rem] uppercase tracking-[0.22em] text-ink/40">
+                {contact.replyNote}
+              </p>
+            </div>
+          </form>
       </div>
     </div>
   </section>
@@ -299,3 +288,38 @@ const labelClass =
     background-image: none;
   }
 </style>
+
+<script>
+  // Reveals the prerendered success panel / error banner from the redirect
+  // query params (?sent=1, ?err={field}). Plain JS, guarded so the listener
+  // is registered once even though the body is swapped by the ClientRouter.
+  if (!(window as any).__contactResultInit) {
+    (window as any).__contactResultInit = true;
+    document.addEventListener("astro:page-load", () => {
+      const params = new URLSearchParams(window.location.search);
+      const panel = document.getElementById("sent-panel");
+      const banner = document.getElementById("err-banner");
+      const form = document.getElementById("enquiry-form");
+      if (!panel || !banner || !form) return;
+
+      if (params.get("sent") === "1") {
+        panel.hidden = false;
+        form.hidden = true;
+        return;
+      }
+
+      const err = params.get("err");
+      if (err) {
+        banner.hidden = false;
+        const messages = JSON.parse(banner.dataset.errors ?? "{}") as Record<string, string>;
+        (document.getElementById("err-msg") as HTMLElement).textContent =
+          messages[err] ?? banner.dataset.default ?? "";
+        const field = form.querySelector<HTMLElement>(`[name="${err}"]`);
+        if (field) {
+          field.classList.add("border-red-400/70");
+          field.setAttribute("aria-invalid", "true");
+        }
+      }
+    });
+  }
+</script>
