@@ -3,15 +3,9 @@ import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import site from "../data/site.json";
 import pages from "../data/pages.json";
+import categories from "../data/categories.json";
 
 const treatments = await getCollection("treatments");
-
-const categories = [
-  { slug: "hair-removal", name: "Αποτρίχωση" },
-  { slug: "face", name: "Πρόσωπο" },
-  { slug: "massage", name: "Μασάζ" },
-  { slug: "body", name: "Σώμα" },
-];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -43,7 +37,7 @@ export const prerender = true;
   <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
     <div class="border-b border-ink/15">
       {
-        categories.map((cat, i) => (
+        categories.categories.map((cat, i) => (
           <a
             href={`/services/${cat.slug}`}
             class="group flex items-baseline justify-between gap-4 border-t border-ink/15 py-8 transition-colors duration-300 hover:bg-blush sm:py-10"

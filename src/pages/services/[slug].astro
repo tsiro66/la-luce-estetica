@@ -5,6 +5,7 @@ import { marked } from "marked";
 import Layout from "../../layouts/Layout.astro";
 import site from "../../data/site.json";
 import servicesMenu from "../../data/services-menu.json";
+import categories from "../../data/categories.json";
 
 export async function getStaticPaths() {
   const treatments = await getCollection("treatments");
@@ -25,10 +26,23 @@ const treatmentImage = data.image
   ? siteImages[`../../assets/site/${data.image}`]?.default
   : undefined;
 
-const other = (await getCollection("treatments"))
-  .filter((t) => t.id !== treatment.id)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+const categorySlug = categories.categories.find(
+  (c) => c.name === data.category,
+)?.slug;
+
+const pool = (await getCollection("treatments")).filter(
+  (t) => t.id !== treatment.id,
+);
+const sameCategory = pool
+  .filter((t) => t.data.category === data.category)
+  .sort((a, b) => a.data.order - b.data.order);
+const otherCategory = pool
+  .filter((t) => t.data.category !== data.category)
+  .sort((a, b) => a.data.order - b.data.order);
+const other = (sameCategory.length >= 3
+  ? sameCategory
+  : [...sameCategory, ...otherCategory]
+).slice(0, 3);
 
 const infoItems = [
   { label: "Διάρκεια", value: data.duration },
@@ -47,12 +61,25 @@ export const prerender = true;
   description={data.subtitle ?? site.seo.defaultDescription}
 >
   <article class="mx-auto max-w-7xl px-6 pt-24 pb-16 lg:px-8">
-    <a
-      href="/services"
-      class="inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
+    <nav
+      class="flex flex-wrap items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50"
     >
-      <span aria-hidden="true">&larr;</span> Όλες οι υπηρεσίες
-    </a>
+      <a
+        href="/services"
+        class="transition-colors hover:text-champagne"
+      >Υπηρεσίες</a>
+      <span aria-hidden="true">/</span>
+      {
+        categorySlug ? (
+          <a
+            href={`/services/${categorySlug}`}
+            class="transition-colors hover:text-champagne"
+          >{data.category}</a>
+        ) : (
+          <span>{data.category}</span>
+        )
+      }
+    </nav>
 
     <header class="mt-10 max-w-3xl">
       <p class="eyebrow" data-reveal>{data.category}</p>
@@ -276,6 +303,16 @@ export const prerender = true;
           ))
         }
       </div>
+      {
+        categorySlug && (
+          <a
+            href={`/services/${categorySlug}`}
+            class="mt-8 inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
+          >
+            Όλες οι θεραπείες — {data.category} <span aria-hidden="true">&nearr;</span>
+          </a>
+        )
+      }
     </div>
   </section>
 </Layout>

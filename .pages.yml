@@ -5,7 +5,7 @@
 media:
   input: public/uploads
   output: /uploads
-  extensions: [avif, gif, jpg, jpeg, png, svg, webp]
+  extensions: [avif, gif, jpg, jpeg, png, svg, webp, mp4, webm]
 
 content:
   # ---------- Global settings (header, footer, nav, SEO) ----------
@@ -165,8 +165,6 @@ content:
           - name: titleEnd
             label: Headline — after accent
             type: string
-          - name: description
-            type: text
           - name: primaryCta
             label: Primary button label (books via Treatwell)
             type: string
@@ -176,14 +174,18 @@ content:
           - name: scrollLabel
             label: Scroll cue text
             type: string
+          - name: metaLine
+            label: Meta line (location & hours)
+            type: string
+            description: Small uppercase line under the hero buttons, e.g. "Χαλάνδρι · Δευ–Παρ 10:00–21:00". Leave empty to hide.
           - name: video
             label: Hero background video URL
             type: string
-            description: mp4/webm URL. When set, replaces the hero photo with an autoplaying muted loop.
+            description: mp4/webm URL. When set, replaces the hero photo with an autoplaying muted loop. Spec — landscape, 1920px wide, 8–15s, no audio, max 5MB.
           - name: image
             label: Background image
             type: image
-            description: Leave empty to keep the built-in default photo.
+            description: Replaces the built-in default hero photo; also used as the video poster. Leave empty to keep the default.
       - name: marquee
         label: Scrolling marquee items
         type: string
@@ -285,6 +287,30 @@ content:
           - name: title
             type: string
           - name: note
+            type: text
+
+  # ---------- Service categories (services category pages) ----------
+  - name: categories
+    label: Service Categories
+    type: file
+    path: src/data/categories.json
+    format: json
+    fields:
+      - name: categories
+        label: Categories
+        type: object
+        list: true
+        fields:
+          - name: slug
+            label: URL slug
+            type: string
+            description: "e.g. hair-removal — the page lives at /services/{slug}"
+          - name: name
+            label: Category name
+            type: string
+            description: Must match the category used in the treatment files.
+          - name: intro
+            label: Intro line
             type: text
 
   # ---------- Contact page ----------

@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
@@ -9,6 +9,14 @@ import heroImage from "../assets/site/hero-room.jpg";
 import receptionImage from "../assets/site/reception.jpg";
 
 const { hero, marquee, featured, studioTeaser, booking } = home;
+
+// Poster for the hero video (also preloaded when the video branch is active).
+const heroPoster = await getImage({
+  src: heroImage,
+  width: 1920,
+  format: "webp",
+  quality: 80,
+});
 
 const treatments = (
   await getCollection("treatments", ({ data }) => data.bestseller)
@@ -23,17 +31,34 @@ export const prerender = true;
 <Layout headerTheme="overlay">
   <!-- ============ HERO ============ -->
   <section class="relative flex min-h-svh items-end overflow-hidden bg-ink">
-    {
-      hero.video ? (
+    {/* Background slot — layout and scrim are identical for every source.
+        Priority: hero.video (autoplaying loop) > hero.image (CMS upload) > built-in still. */}
+    {hero.video && (
+      <link rel="preload" as="image" href={hero.image || heroPoster.src} fetchpriority="high" />
+    )}
+    <div class="absolute inset-0 animate-hero">
+      {hero.video ? (
         <video
           src={hero.video}
           autoplay
           muted
           loop
           playsinline
-          poster={heroImage.src}
-          class="absolute inset-0 h-full w-full object-cover"
+          preload="metadata"
+          disablepictureinpicture
+          poster={hero.image || heroPoster.src}
+          aria-hidden="true"
+          tabindex="-1"
+          class="h-full w-full object-cover"
         ></video>
+      ) : hero.image ? (
+        <img
+          src={hero.image}
+          alt="Χώρος περιποίησης La Luce Estetica"
+          loading="eager"
+          fetchpriority="high"
+          class="h-full w-full object-cover"
+        />
       ) : (
         <Image
           src={heroImage}
@@ -43,12 +68,18 @@ export const prerender = true;
           quality={82}
           loading="eager"
           fetchpriority="high"
-          class="absolute inset-0 h-full w-full object-cover"
+          class="h-full w-full object-cover"
         />
-      )
-    }
+      )}
+    </div>
+    {/* Bottom scrim keeps the copy legible; top vignette keeps the overlay header readable. */}
     <div
-      class="absolute inset-0 bg-linear-to-t from-ink/25 via-ink/40 to-ink/50"
+      class="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/30 to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-linear-to-b from-ink/40 to-transparent"
       aria-hidden="true"
     >
     </div>
@@ -60,34 +91,50 @@ export const prerender = true;
         {hero.eyebrow}
       </p>
       <h1
-        class="mt-6 max-w-5xl font-display text-[clamp(2.9rem,8.5vw,7rem)] font-light leading-[0.98] tracking-[-0.01em] text-paper"
+        class="mt-6 max-w-2xl font-display text-[clamp(2.3rem,5vw,4.25rem)] font-light leading-[1.06] tracking-[-0.01em] text-balance text-paper"
         data-reveal
-        style="--reveal-delay:120ms"
+        style="--reveal-delay:100ms"
       >
         {hero.titleStart} <em class="italic text-sand">{hero.titleAccent}</em
         > {hero.titleEnd}
       </h1>
-      <p
-        class="mt-8 max-w-xl font-sans text-base leading-relaxed text-paper/80 sm:text-lg"
-        data-reveal
-        style="--reveal-delay:220ms"
-      >
-        {hero.description}
-      </p>
       <div
-        class="mt-10 flex flex-col gap-4 sm:flex-row"
+        class="hero-rule mt-10 h-px w-14 bg-champagne"
         data-reveal
-        style="--reveal-delay:320ms"
+        style="--reveal-delay:200ms"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="mt-10 flex flex-wrap items-center gap-x-10 gap-y-5"
+        data-reveal
+        style="--reveal-delay:280ms"
       >
         <Button href={site.treatwellUrl} external variant="light">
           {hero.primaryCta}
         </Button>
-        <Button href="/services" variant="outline-light">
+        <a
+          href="/services"
+          class="group inline-flex items-center gap-3 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper/75 transition-colors duration-300 hover:text-paper"
+        >
           {hero.secondaryCta}
-        </Button>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+            <path d="M1 8h14M9 2l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
       </div>
+      {hero.metaLine && (
+        <p
+          class="mt-12 font-sans text-[0.62rem] uppercase tracking-[0.26em] text-paper/50"
+          data-reveal
+          style="--reveal-delay:360ms"
+        >
+          {hero.metaLine}
+        </p>
+      )}
     </div>
 
+    {/* TODO(video): pause/play control goes here when the hero video ships. */}
     <div
       class="absolute bottom-8 right-8 hidden items-center gap-4 md:flex"
       aria-hidden="true"
