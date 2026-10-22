@@ -6,6 +6,7 @@ import Layout from "../../layouts/Layout.astro";
 import site from "../../data/site.json";
 import servicesMenu from "../../data/services-menu.json";
 import categories from "../../data/categories.json";
+import subcategoriesData from "../../data/subcategories.json";
 
 export async function getStaticPaths() {
   const treatments = await getCollection("treatments");
@@ -29,6 +30,17 @@ const treatmentImage = data.image
 const categorySlug = categories.categories.find(
   (c) => c.name === data.category,
 )?.slug;
+
+const subcategoryEntry = Object.entries(subcategoriesData).find(([, subs]) =>
+  subs.some((s) => s.treatments.includes(treatment.id)),
+);
+const subcategory = subcategoryEntry?.[1].find((s) =>
+  s.treatments.includes(treatment.id),
+);
+const subcategoryHref =
+  subcategoryEntry && subcategory
+    ? `/services/${subcategoryEntry[0]}/${subcategory.slug}`
+    : undefined;
 
 const pool = (await getCollection("treatments")).filter(
   (t) => t.id !== treatment.id,
@@ -77,6 +89,17 @@ export const prerender = true;
           >{data.category}</a>
         ) : (
           <span>{data.category}</span>
+        )
+      }
+      {
+        subcategory && (
+          <>
+            <span aria-hidden="true">/</span>
+            <a
+              href={subcategoryHref}
+              class="transition-colors hover:text-champagne"
+            >{subcategory.name}</a>
+          </>
         )
       }
     </nav>
@@ -304,13 +327,22 @@ export const prerender = true;
         }
       </div>
       {
-        categorySlug && (
+        subcategory ? (
           <a
-            href={`/services/${categorySlug}`}
+            href={subcategoryHref}
             class="mt-8 inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
           >
-            Όλες οι θεραπείες — {data.category} <span aria-hidden="true">&nearr;</span>
+            {subcategory.name} <span aria-hidden="true">&nearr;</span>
           </a>
+        ) : (
+          categorySlug && (
+            <a
+              href={`/services/${categorySlug}`}
+              class="mt-8 inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
+            >
+              Όλες οι θεραπείες — {data.category} <span aria-hidden="true">&nearr;</span>
+            </a>
+          )
         )
       }
     </div>

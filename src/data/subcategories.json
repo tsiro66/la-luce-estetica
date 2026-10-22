@@ -1,0 +1,84 @@
+{
+  "face": [
+    {
+      "slug": "cleansing-detox",
+      "name": "Καθαρισμός & Αποτοξίνωση",
+      "intro": "Βαθύς καθαρισμός, απολέπιση και αποτοξίνωση — το πρώτο βήμα για καθαρό, λαμπερό και ανανεωμένο δέρμα.",
+      "treatments": [
+        "deep-cleansing-facial",
+        "detox-facial",
+        "diamond-dermabrasion",
+        "hydrofacial"
+      ]
+    },
+    {
+      "slug": "hydration",
+      "name": "Ενυδάτωση & Θρέψη",
+      "intro": "Βαθιά ενυδάτωση και θρέψη με υαλουρονικό οξύ και οξυγονοθεραπεία για γεμάτη, σφριγηλή επιδερμίδα.",
+      "treatments": [
+        "ha3-hyaluronic-boost",
+        "oxygen-hyaluronic-shield"
+      ]
+    },
+    {
+      "slug": "antiaging",
+      "name": "Αντιγήρανση & Σύσφιξη",
+      "intro": "Στοχευμένη φροντίδα ματιών και σύσφιξη για ξεκούραστο, νεανικό βλέμμα.",
+      "treatments": [
+        "stress-positive-eye-lift"
+      ]
+    },
+    {
+      "slug": "specialized",
+      "name": "Εξειδικευμένες Θεραπείες Προσώπου",
+      "intro": "Προχωρημένες τεχνολογίες — μικρονυγμοί, ραδιοσυχνότητες, κρυοθεραπεία, λάμψη — για κάθε ανάγκη της επιδερμίδας.",
+      "treatments": [
+        "skin-diagnosis",
+        "dermapen",
+        "rf-face",
+        "cryovital-facial",
+        "express-radiance-facial",
+        "lpg-endermolift",
+        "vita-c-brightening"
+      ]
+    }
+  ],
+  "body": [
+    {
+      "slug": "cellulite",
+      "name": "Κυτταρίτιδα",
+      "intro": "Στοχευμένες θεραπείες κατά της όψης φλοιού πορτοκαλιού — βελτίωση της κυκλοφορίας και της λεμφικής παροχέτευσης.",
+      "treatments": [
+        "endosphere-face",
+        "endospheres-body",
+        "lpg-endermologie-body",
+        "mini-vacuum",
+        "pressotherapy"
+      ]
+    },
+    {
+      "slug": "firming",
+      "name": "Σύσφιξη Σώματος",
+      "intro": "Δερματική σύσφιξη και αναδόμηση σε κοιλιά, μηρούς και μπράτσα — για σφριγηλό, τονωμένο σώμα.",
+      "treatments": [
+        "hiems",
+        "lpg-endermologie-body",
+        "rf-body"
+      ]
+    },
+    {
+      "slug": "fat-reduction",
+      "name": "Τοπικό Πάχος",
+      "intro": "Στοχευμένη δράση στο επίμονο τοπικό πάχος και τις κατακρατήσεις — από την υπερηχητική λιπογλυπτική έως τη λεμφική παροχέτευση.",
+      "treatments": [
+        "body-scrub",
+        "cavitation",
+        "hiems",
+        "lpg-endermologie-body",
+        "mini-vacuum",
+        "rf-body",
+        "lymphatic-massage"
+      ]
+    }
+  ]
+}

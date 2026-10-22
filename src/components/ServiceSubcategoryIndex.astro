@@ -1,0 +1,105 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "./Button.astro";
+import site from "../data/site.json";
+import pages from "../data/pages.json";
+import categories from "../data/categories.json";
+import subcategoriesData from "../data/subcategories.json";
+
+interface Props {
+  /** Slug from src/data/categories.json, e.g. "face" */
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const category = categories.categories.find((c) => c.slug === slug);
+const subs =
+  subcategoriesData[slug as keyof typeof subcategoriesData] ?? [];
+
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<Layout
+  title={category ? `${category.name} — ${pages.services.title} — ${site.siteName}` : pages.services.title}
+  description={category?.intro ?? site.seo.defaultDescription}
+>
+  <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
+    <a
+      href="/services"
+      class="inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
+    >
+      <span aria-hidden="true">&larr;</span> Όλες οι κατηγορίες
+    </a>
+
+    <header class="mt-10">
+      <p class="eyebrow" data-reveal>{pages.services.title}</p>
+      <h1
+        class="mt-4 font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+        data-reveal
+        style="--reveal-delay:120ms"
+      >
+        {category?.name}
+      </h1>
+      <p
+        class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+        data-reveal
+        style="--reveal-delay:220ms"
+      >
+        {category?.intro}
+      </p>
+    </header>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
+    <div class="border-b border-ink/15">
+      {
+        subs.map((sub, i) => (
+          <a
+            href={`/services/${slug}/${sub.slug}`}
+            class="group flex items-baseline justify-between gap-4 border-t border-ink/15 py-8 transition-colors duration-300 hover:bg-blush sm:py-10"
+          >
+            <span class="flex min-w-0 items-baseline gap-6 sm:gap-10">
+              <span class="font-sans text-xs tabular-nums text-champagne">
+                {pad(i + 1)}
+              </span>
+              <span class="min-w-0">
+                <span class="block font-display text-3xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-5xl">
+                  {sub.name}
+                </span>
+                <span class="mt-2 hidden max-w-xl truncate font-sans text-sm leading-relaxed text-ink/50 sm:block">
+                  {sub.intro}
+                </span>
+              </span>
+            </span>
+            <span class="flex shrink-0 items-baseline gap-6 sm:gap-10">
+              <span class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums">
+                {pad(sub.treatments.length)}
+              </span>
+              <span
+                class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                aria-hidden="true"
+              >
+                &nearr;
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-ink/10 bg-blush">
+    <div class="mx-auto max-w-7xl px-6 py-20 text-center lg:px-8" data-reveal>
+      <p class="eyebrow">Κρατήσεις</p>
+      <h2 class="mt-4 font-display text-3xl font-light text-ink sm:text-4xl">
+        Κλείστε το ραντεβού σας
+      </h2>
+      <p class="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed text-ink/60">
+        Όλες οι θεραπείες κλείνονται online μέσω Treatwell — επιλέξτε τη μέρα και την ώρα που σας βολεύει.
+      </p>
+      <Button href={site.treatwellUrl} external class="mt-8">
+        Κλείστε Ραντεβού Τώρα <span aria-hidden="true">&nearr;</span>
+      </Button>
+    </div>
+  </section>
+</Layout>

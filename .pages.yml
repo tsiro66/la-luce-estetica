@@ -313,6 +313,52 @@ content:
             label: Intro line
             type: text
 
+  # ---------- Service subcategories (face, body) ----------
+  - name: subcategories
+    label: Service Subcategories
+    type: file
+    path: src/data/subcategories.json
+    format: json
+    fields:
+      - name: face
+        label: Face subcategories
+        type: object
+        list: true
+        fields:
+          - name: slug
+            label: URL slug
+            type: string
+            description: "e.g. cleansing-detox — the page lives at /services/face/{slug}"
+          - name: name
+            label: Subcategory name
+            type: string
+          - name: intro
+            label: Intro line
+            type: text
+          - name: treatments
+            label: Treatment IDs
+            type: list
+            description: "Filenames from src/content/treatments without the .md extension (e.g. deep-cleansing-facial)."
+      - name: body
+        label: Body subcategories
+        type: object
+        list: true
+        fields:
+          - name: slug
+            label: URL slug
+            type: string
+            description: "e.g. cellulite — the page lives at /services/body/{slug}"
+          - name: name
+            label: Subcategory name
+            type: string
+          - name: intro
+            label: Intro line
+            type: text
+          - name: treatments
+            label: Treatment IDs
+            type: list
+            description: "Filenames from src/content/treatments without the .md extension (e.g. cavitation). A treatment may appear in multiple subcategories."
+
   # ---------- Contact page ----------
   - name: contact
     label: Contact Page

@@ -1,0 +1,117 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import Button from "../../../components/Button.astro";
+import site from "../../../data/site.json";
+import pages from "../../../data/pages.json";
+import categories from "../../../data/categories.json";
+import subcategoriesData from "../../../data/subcategories.json";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return Object.entries(subcategoriesData).flatMap(([group, subs]) =>
+    subs.map((sub) => ({
+      params: { group, sub: sub.slug },
+      props: { group, sub },
+    })),
+  );
+}
+
+const { group, sub } = Astro.props;
+const category = categories.categories.find((c) => c.slug === group);
+
+const treatments = (await getCollection("treatments"))
+  .filter((t) => sub.treatments.includes(t.id))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<Layout
+  title={`${sub.name} — ${category?.name ?? ""} — ${site.siteName}`}
+  description={sub.intro ?? site.seo.defaultDescription}
+>
+  <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
+    <nav
+      class="flex flex-wrap items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50"
+    >
+      <a href="/services" class="transition-colors hover:text-champagne">Υπηρεσίες</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/services/${group}`} class="transition-colors hover:text-champagne">{category?.name}</a>
+      <span aria-hidden="true">/</span>
+      <span>{sub.name}</span>
+    </nav>
+
+    <header class="mt-10">
+      <p class="eyebrow" data-reveal>{category?.name}</p>
+      <h1
+        class="mt-4 font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+        data-reveal
+        style="--reveal-delay:120ms"
+      >
+        {sub.name}
+      </h1>
+      <p
+        class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+        data-reveal
+        style="--reveal-delay:220ms"
+      >
+        {sub.intro}
+      </p>
+    </header>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
+    <div class="border-b border-ink/15">
+      {
+        treatments.map((t, i) => (
+          <a
+            href={`/services/${t.id}`}
+            class="group flex items-baseline justify-between gap-4 border-t border-ink/15 py-7 transition-colors duration-300 hover:bg-blush sm:py-8"
+          >
+            <span class="flex min-w-0 items-baseline gap-5 sm:gap-8">
+              <span class="font-sans text-xs tabular-nums text-champagne">
+                {pad(i + 1)}
+              </span>
+              <span class="min-w-0">
+                <span class="block font-display text-2xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-4xl">
+                  {t.data.title}
+                </span>
+                <span class="mt-2 hidden max-w-xl truncate font-sans text-sm leading-relaxed text-ink/50 sm:block">
+                  {t.data.subtitle}
+                </span>
+              </span>
+            </span>
+            <span class="flex shrink-0 items-baseline gap-4 sm:gap-6">
+              <span class="font-sans text-xs uppercase tracking-[0.2em] tabular-nums text-ink/40">
+                {t.data.duration}
+              </span>
+              <span
+                class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                aria-hidden="true"
+              >
+                &nearr;
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-ink/10 bg-blush">
+    <div class="mx-auto max-w-7xl px-6 py-20 text-center lg:px-8" data-reveal>
+      <p class="eyebrow">Κρατήσεις</p>
+      <h2 class="mt-4 font-display text-3xl font-light text-ink sm:text-4xl">
+        Κλείστε το ραντεβού σας
+      </h2>
+      <p class="mx-auto mt-4 max-w-md font-sans text-sm leading-relaxed text-ink/60">
+        Όλες οι θεραπείες κλείνονται online μέσω Treatwell — επιλέξτε τη μέρα και την ώρα που σας βολεύει.
+      </p>
+      <Button href={site.treatwellUrl} external class="mt-8">
+        Κλείστε Ραντεβού Τώρα <span aria-hidden="true">&nearr;</span>
+      </Button>
+    </div>
+  </section>
+</Layout>
