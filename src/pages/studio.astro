@@ -272,6 +272,30 @@ export const prerender = true;
         script = document.createElement("script");
         script.src = PANNELLUM + "/pannellum.js";
         script.setAttribute("data-pannellum-js", "");
+        script.addEventListener(
+          "error",
+          () => {
+            // Failed (offline / adblock) — drop the dead tag so the next
+            // visit retries instead of finding a tag that will never load.
+            script?.remove();
+            const box = document.getElementById("tour-viewer");
+            if (box && !box.querySelector("canvas")) {
+              box.classList.add(
+                "flex",
+                "items-center",
+                "justify-center",
+                "p-6",
+                "text-center",
+                "font-sans",
+                "text-sm",
+                "text-paper/70",
+              );
+              box.textContent =
+                "Δεν μπόρεσε να φορτώσει η εικονική περιήγηση. Δοκιμάστε ξανά σε λίγο.";
+            }
+          },
+          { once: true },
+        );
         document.head.append(script);
       }
       script.addEventListener("load", cb, { once: true });
@@ -315,8 +339,12 @@ export const prerender = true;
 
         buttons.forEach((button) => {
           button.addEventListener("click", () => {
-            buttons.forEach((b) => delete b.dataset.active);
+            buttons.forEach((b) => {
+              delete b.dataset.active;
+              b.setAttribute("aria-selected", "false");
+            });
             button.dataset.active = "";
+            button.setAttribute("aria-selected", "true");
             viewer.loadScene(button.dataset.scene);
           });
         });
