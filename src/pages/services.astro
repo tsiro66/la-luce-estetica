@@ -35,30 +35,30 @@ export const prerender = true;
   </section>
 
   <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
-    <div class="border-b border-ink/15">
+    <div class="grid gap-4 sm:grid-cols-3">
       {
         categories.categories.map((cat, i) => (
           <a
             href={`/services/${cat.slug}`}
-            class="group flex items-baseline justify-between gap-4 border-t border-ink/15 py-8 transition-colors duration-300 hover:bg-blush sm:py-10"
+            class="group relative mx-auto flex aspect-square w-full max-w-xs flex-col justify-between border border-ink/10 bg-paper p-6 transition-colors duration-300 hover:border-champagne/50 hover:bg-blush sm:max-w-none"
           >
-            <span class="flex items-baseline gap-6 sm:gap-10">
-              <span class="font-sans text-xs tabular-nums text-champagne">
-                {pad(i + 1)}
-              </span>
-              <span class="font-display text-3xl font-light text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-5xl">
+            <span class="font-sans text-xs tabular-nums text-champagne">
+              {pad(i + 1)}
+            </span>
+            <span class="mt-10">
+              <span class="block font-display text-2xl font-light leading-tight text-ink transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-3xl">
                 {cat.name}
               </span>
-            </span>
-            <span class="flex items-baseline gap-6 sm:gap-10">
-              <span class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums">
-                {pad(treatments.filter((t) => t.data.category === cat.name).length)}
-              </span>
-              <span
-                class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                aria-hidden="true"
-              >
-                &nearr;
+              <span class="mt-4 flex items-center justify-between">
+                <span class="font-sans text-xs uppercase tracking-[0.22em] text-ink/40 tabular-nums">
+                  {pad(treatments.filter((t) => t.data.category === cat.name).length)} θεραπείες
+                </span>
+                <span
+                  class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  aria-hidden="true"
+                >
+                  &nearr;
+                </span>
               </span>
             </span>
           </a>
