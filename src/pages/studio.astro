@@ -4,7 +4,6 @@ import Layout from "../layouts/Layout.astro";
 import site from "../data/site.json";
 import pages from "../data/pages.json";
 
-import heroRoom from "../assets/site/hero-room.jpg";
 import receptionRoom from "../assets/site/reception.jpg";
 import facialRoom from "../assets/site/room-facial.jpg";
 import facialRoom2 from "../assets/site/room-facial-2.jpg";
@@ -12,6 +11,7 @@ import couplesRoom from "../assets/site/room-couples.jpg";
 import bodyRoom from "../assets/site/room-body.jpg";
 import machineDetail from "../assets/site/machine-detail.jpg";
 import storefront from "../assets/site/storefront.jpg";
+import storefrontStreet from "../assets/site/storefront-street.jpg";
 
 import tourFacial from "../assets/tour/facial-room.jpg";
 import tourBody from "../assets/tour/body-room.jpg";
@@ -50,17 +50,15 @@ export const prerender = true;
 
   <!-- Gallery -->
   <section class="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
-    <div class="grid gap-4 md:grid-cols-3">
-      <!-- Feature tile fills 2×2 — h-full stretches to the two aspect-[4/3]
-           rows set by the tiles beside it, so all six crops align with no gaps -->
-      <div class="md:col-span-2 md:row-span-2" data-reveal>
+    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <div class="aspect-[4/3]" data-reveal>
         <Image
-          src={heroRoom}
-          alt="Κύρια αίθουσα θεραπειών με δύο κρεβάτια και προϊόντα περιποίησης"
-          widths={[768, 1280, 1920]}
-          sizes="(min-width: 1024px) 66vw, 100vw"
+          src={receptionRoom}
+          alt="Υποδοχή με λογότυπο La Luce"
+          widths={[640, 1024]}
+          sizes="(min-width: 768px) 50vw, (min-width: 1024px) 33vw, 100vw"
           quality={80}
-          class="aspect-[4/3] h-full w-full object-cover md:aspect-auto"
+          class="h-full w-full object-cover"
         />
       </div>
       <div class="aspect-[4/3]" data-reveal>
@@ -85,8 +83,8 @@ export const prerender = true;
       </div>
       <div class="aspect-[4/3]" data-reveal>
         <Image
-          src={receptionRoom}
-          alt="Υποδοχή με λογότυπο La Luce"
+          src={storefrontStreet}
+          alt="Η La Luce Estetica στην οδό Πλατάνου"
           widths={[640, 1024]}
           sizes="(min-width: 1024px) 33vw, 100vw"
           quality={80}
