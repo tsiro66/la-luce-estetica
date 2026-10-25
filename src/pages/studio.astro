@@ -253,11 +253,15 @@ export const prerender = true;
 
     // The ClientRouter re-executes this inline script on every navigation
     // into /studio; everything here is idempotent / guarded.
+    // The ClientRouter swaps the <head> on every client navigation, which
+    // silently removes runtime-appended pannellum tags — while the
+    // `pannellum` global from earlier executions survives. A missing
+    // pannellum.css leaves the canvas styling-less, so it falls back to its
+    // default attribute size (300x150-ish) and the renderer computes the
+    // same tiny height back (clientHeight of an unstyled canvas = attr
+    // height): the squashed-strip break. So: whether or not the global is
+    // alive, first make sure both tags are back in the head (idempotent).
     function ensurePannellum(cb) {
-      if (typeof pannellum !== "undefined") {
-        cb();
-        return;
-      }
       if (!document.querySelector("link[data-pannellum-css]")) {
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -298,6 +302,12 @@ export const prerender = true;
         );
         document.head.append(script);
       }
+      if (typeof pannellum !== "undefined") {
+        // Cached/global survivor: no further load event will fire, so the
+        // listener below would hang forever — call straight through.
+        cb();
+        return;
+      }
       script.addEventListener("load", cb, { once: true });
     }
 
@@ -337,6 +347,16 @@ export const prerender = true;
         });
         window.__tourViewer = viewer;
 
+        // Safety net: if the viewer was ever created before the container
+        // reached its final size, pannellum only re-measures on window
+        // resize events — an element size change alone won't fix the
+        // canvas. Re-measure whenever the container itself resizes.
+        const ro = new ResizeObserver(() => {
+          if (window.__tourViewer === viewer) viewer.resize();
+        });
+        ro.observe(viewerEl);
+        window.__tourRO = ro;
+
         buttons.forEach((button) => {
           button.addEventListener("click", () => {
             buttons.forEach((b) => {
@@ -357,6 +377,8 @@ export const prerender = true;
     if (!window.__tourCleanupBound) {
       window.__tourCleanupBound = true;
       document.addEventListener("astro:before-swap", () => {
+        window.__tourRO?.disconnect();
+        window.__tourRO = null;
         window.__tourViewer?.destroy();
         window.__tourViewer = null;
       });
