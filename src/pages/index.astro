@@ -71,9 +71,11 @@ export const prerender = true;
         />
       )}
     </div>
-    {/* Bottom scrim keeps the copy legible; top vignette keeps the overlay header readable. */}
+    {/* Bottom scrim keeps the copy legible; top vignette keeps the overlay header readable.
+        The video branch gets a lighter scrim + a soft text-shadow (inherited by the copy)
+        so the footage stays visible under the text. */}
     <div
-      class="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/30 to-transparent"
+      class={`absolute inset-0 bg-linear-to-t to-transparent ${hero.video ? "from-ink/60 via-ink/15" : "from-ink/75 via-ink/30"}`}
       aria-hidden="true"
     >
     </div>
@@ -84,13 +86,13 @@ export const prerender = true;
     </div>
 
     <div
-      class="relative mx-auto w-full max-w-7xl px-6 pb-24 pt-40 sm:pb-32 lg:px-8"
+      class={`relative mx-auto w-full max-w-7xl px-6 pb-24 pt-40 sm:pb-32 lg:px-8 ${hero.video ? "[text-shadow:0_1px_18px_rgba(28,25,23,0.55),0_0_44px_rgba(28,25,23,0.35)]" : ""}`}
     >
       <p class="eyebrow text-sand" data-reveal>
         {hero.eyebrow}
       </p>
       <h1
-        class="mt-6 max-w-2xl font-display text-[clamp(2.3rem,5vw,4.25rem)] font-light leading-[1.06] tracking-[-0.01em] text-balance text-paper"
+        class="mt-6 max-w-2xl font-display text-[clamp(1.9rem,4vw,3.4rem)] font-light leading-[1.06] tracking-[-0.01em] text-balance text-paper"
         data-reveal
         style="--reveal-delay:100ms"
       >

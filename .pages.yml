@@ -181,7 +181,7 @@ content:
           - name: video
             label: Hero background video URL
             type: string
-            description: mp4/webm URL. When set, replaces the hero photo with an autoplaying muted loop. Spec — landscape, 1920px wide, 8–15s, no audio, max 5MB.
+            description: mp4/webm URL. When set, replaces the hero photo with an autoplaying muted loop. Spec — landscape, 1920px wide, no audio; compress to ~5–6MB (a 30–60s studio walkthrough works as a loop).
           - name: image
             label: Background image
             type: image
