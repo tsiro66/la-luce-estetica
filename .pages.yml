@@ -111,6 +111,17 @@ content:
           - name: mapLabel
             label: Directions link label
             type: string
+          - name: map
+            label: Footer map
+            type: object
+            fields:
+              - name: embedUrl
+                label: Google Maps embed URL
+                type: string
+                description: "Embedded iframe URL (…&output=embed). Shows the map strip above the copyright bar."
+              - name: title
+                label: Map accessibility title
+                type: string
           - name: address
             type: object
             fields:
