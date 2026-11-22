@@ -7,8 +7,7 @@ duration: "15 – 60 λεπτά"
 order: 1
 bestseller: true
 image: "room-laser.jpg"
-videos:
-  - "/videos/services/laser-alexandrite.mp4"
+infoCardVideo: "/videos/services/laser-alexandrite.mp4"
 info:
   resultDuration: "Μόνιμο"
   pain: "Ελάχιστο έως ανώδυνο"
