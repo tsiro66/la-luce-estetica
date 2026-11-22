@@ -46,9 +46,6 @@ content:
       - name: backHomeLabel
         label: '"Back to Home" button label'
         type: string
-      - name: comingSoonLabel
-        label: Placeholder pages eyebrow label
-        type: string
       - name: menuLabels
         label: Mobile menu labels
         type: object
@@ -353,7 +350,8 @@ content:
             type: text
           - name: treatments
             label: Treatment IDs
-            type: list
+            type: string
+            list: true
             description: "Filenames from src/content/treatments without the .md extension (e.g. deep-cleansing-facial)."
           - name: video
             label: Promo video URL
@@ -377,13 +375,66 @@ content:
             type: text
           - name: treatments
             label: Treatment IDs
-            type: list
+            type: string
+            list: true
             description: "Filenames from src/content/treatments without the .md extension (e.g. cavitation). A treatment may appear in multiple subcategories."
           - name: video
             label: Promo video URL
             type: string
             required: false
             description: "Optional mp4 under /videos/services/ (e.g. /videos/services/face-cleansing-detox.mp4). Shown under the subcategory header; portrait videos render contained, not cropped. Leave empty for no video."
+
+  # ---------- Laser / waxing / brows lists (laser & waxing treatment pages) ----------
+  - name: services-menu
+    label: Laser & Waxing Lists
+    type: file
+    path: src/data/services-menu.json
+    format: json
+    fields:
+      - name: laser
+        label: Laser areas
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: Area
+            type: string
+          - name: audience
+            label: Audience
+            type: string
+            description: 'e.g. "Γυναίκες & Άνδρες". Leave empty for women-only areas.'
+          - name: duration
+            type: string
+            description: "e.g. 15 λεπτά"
+          - name: note
+            label: Description
+            type: text
+      - name: wax
+        label: Waxing areas
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: Area
+            type: string
+          - name: duration
+            type: string
+          - name: note
+            label: Description
+            type: text
+      - name: brows
+        label: Brow services
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: Service
+            type: string
+          - name: duration
+            type: string
+          - name: note
+            label: Description
+            type: text
 
   # ---------- Contact page ----------
   - name: contact
@@ -445,7 +496,8 @@ content:
               - name: placeholder
                 type: string
               - name: options
-                type: list
+                type: string
+                list: true
           - name: message
             type: object
             fields:
@@ -508,9 +560,6 @@ content:
         label: Category / eyebrow
         type: string
         description: 'Shown next to the number, e.g. "Body Treatment".'
-      - name: duration
-        type: string
-        description: "e.g. 45 min"
       - name: pageTitle
         label: SEO page title
         type: string
@@ -535,6 +584,15 @@ content:
         label: Video above the info card
         type: string
         description: "Optional mp4 under /videos/services/ (e.g. /videos/services/face-cleansing-detox.mp4). Autoplaying muted loop shown above the general info card on the treatment page. Leave empty for no video."
+      - name: videos
+        label: Promo videos (gallery)
+        type: string
+        list: true
+        description: "Looping mp4 paths under /videos/services/, e.g. /videos/services/lpg-endermologie-body-1.mp4. One video renders in the side rail; two or more add a full-width gallery below the content. Leave empty for no video."
+      - name: image
+        label: Card image filename
+        type: string
+        description: "Filename inside src/assets/site (e.g. room-body.jpg). Not rendered on the site yet — preserved so edits don't wipe it."
       - name: problems
         label: "Which problem does it solve?"
         type: text
