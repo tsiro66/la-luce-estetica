@@ -5,7 +5,7 @@ const year = new Date().getFullYear();
 const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
 ---
 
-<footer class="border-t border-ink/10 bg-paper">
+<footer id="site-footer" class="border-t border-ink/10 bg-paper">
   <div
     class="mx-auto grid max-w-7xl gap-12 px-6 py-16 sm:py-20 md:grid-cols-12 lg:px-8"
   >
@@ -105,6 +105,43 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     </div>
   </div>
 </footer>
+
+<script>
+  // Sticky-reveal footer. Measures #site-footer (ResizeObserver catches
+  // font load / re-wrap) and pins it behind the page via body.footer-reveal
+  // (see global.css) when it fits the viewport; taller-than-viewport footers
+  // (stacked phone layout) stay in normal flow so their content is reachable.
+  // Guarded so it registers once; re-initialised per page because the
+  // ClientRouter swaps in a fresh footer on every navigation.
+  if (!(window as any).__footerRevealInit) {
+    (window as any).__footerRevealInit = true;
+    let observer: ResizeObserver | null = null;
+
+    const apply = (footer: HTMLElement) => {
+      const h = footer.offsetHeight;
+      document.documentElement.style.setProperty("--footer-h", `${h}px`);
+      document.body.classList.toggle("footer-reveal", h <= window.innerHeight);
+    };
+
+    const init = () => {
+      const footer = document.getElementById("site-footer");
+      if (!footer) return;
+      observer?.disconnect();
+      observer = new ResizeObserver(() => apply(footer));
+      observer.observe(footer);
+      apply(footer);
+    };
+
+    window.addEventListener("resize", () => {
+      const footer = document.getElementById("site-footer");
+      if (footer) apply(footer);
+    }, { passive: true });
+
+    document.addEventListener("astro:page-load", init);
+    document.addEventListener("astro:before-swap", () => observer?.disconnect());
+    init();
+  }
+</script>
 
 <style>
   .footer-heading {

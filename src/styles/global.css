@@ -57,6 +57,25 @@
 
   body {
     @apply bg-paper font-sans text-ink antialiased;
+    /* Own stacking context so the pinned footer (z-index:-1) paints above
+       the body background but below #content — see the footer-reveal rules. */
+    isolation: isolate;
+  }
+
+  /* Sticky-reveal footer: #site-footer is pinned behind the page and gets
+     uncovered as #content scrolls off. --footer-h is set by the script in
+     Footer.astro, which also adds .footer-reveal only when the footer fits
+     inside the viewport (otherwise the footer stays in normal flow). */
+  body.footer-reveal #site-footer {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+
+  body.footer-reveal #content {
+    margin-bottom: var(--footer-h, 0px);
+    background: var(--color-paper);
   }
 
   ::selection {
