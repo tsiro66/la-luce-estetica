@@ -1,0 +1,23 @@
+---
+interface Props {
+  /** mp4 path under public/videos/services/ — poster .webp is derived from it */
+  src: string;
+  class?: string;
+}
+
+const { src, class: className } = Astro.props;
+---
+
+<video
+  src={src}
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  disablepictureinpicture
+  poster={src.replace(/\.mp4$/, ".webp")}
+  aria-hidden="true"
+  tabindex="-1"
+  class={className}
+></video>
