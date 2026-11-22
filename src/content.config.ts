@@ -35,6 +35,8 @@ const treatments = defineCollection({
     image: z.string().optional(),
     /** Looping promo videos served from public/videos/services/, e.g. "/videos/services/laser-alexandrite.mp4" */
     videos: z.array(z.string()).default([]),
+    /** Looping promo video shown above the general-info card, e.g. "/videos/services/face-cleansing-detox.mp4" */
+    infoCardVideo: z.string().optional(),
   }),
 });
 

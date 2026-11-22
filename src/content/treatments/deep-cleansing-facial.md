@@ -7,6 +7,7 @@ duration: "1 ώρα 30 λεπτά"
 order: 1
 bestseller: true
 image: "room-facial.jpg"
+infoCardVideo: "/videos/services/face-cleansing-detox.mp4"
 info:
   pain: "Ήπια πιεστική αίσθηση κατά την εξαγωγή"
   recovery: "24 ώρες (ήπια ερυθρότητα)"

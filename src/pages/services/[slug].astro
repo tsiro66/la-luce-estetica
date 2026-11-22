@@ -284,6 +284,25 @@ export const prerender = true;
       </div>
 
       <aside class="md:col-span-5">
+        {
+          data.infoCardVideo && (
+            <div class="mb-6 flex justify-center bg-ink" data-reveal>
+              <video
+                src={data.infoCardVideo}
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                disablepictureinpicture
+                poster={data.infoCardVideo.replace(/\.mp4$/, ".webp")}
+                aria-hidden="true"
+                tabindex="-1"
+                class="max-h-[70svh] w-auto max-w-full"
+              ></video>
+            </div>
+          )
+        }
         <div
           class="sticky top-32 border border-ink/15 bg-blush p-8"
           data-reveal

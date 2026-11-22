@@ -520,6 +520,10 @@ content:
         type: boolean
         default: false
         description: Best sellers are shown on the homepage.
+      - name: infoCardVideo
+        label: Video above the info card
+        type: string
+        description: "Optional mp4 under /videos/services/ (e.g. /videos/services/face-cleansing-detox.mp4). Autoplaying muted loop shown above the general info card on the treatment page. Leave empty for no video."
       - name: problems
         label: "Which problem does it solve?"
         type: text
