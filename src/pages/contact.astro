@@ -58,7 +58,7 @@ const labelClass =
     <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-x-14">
 
       <!-- ===== Info ===== -->
-      <aside class="order-2 lg:order-1 lg:col-span-5" data-reveal>
+      <aside class="order-2 lg:col-span-5 lg:border-l lg:border-ink/10 lg:pl-14" data-reveal>
         <div>
           <h2 class="eyebrow">{contact.visitHeading}</h2>
           <address class="mt-4 font-sans text-base not-italic leading-relaxed text-ink">
@@ -116,7 +116,7 @@ const labelClass =
       </aside>
 
       <!-- ===== Form panel ===== -->
-      <div class="order-1 lg:order-2 lg:col-span-7 lg:border-l lg:border-ink/10 lg:pl-14" data-reveal style="--reveal-delay:120ms">
+      <div class="order-1 lg:col-span-7" data-reveal style="--reveal-delay:120ms">
           <!-- Success panel — prerendered hidden, revealed by the inline
                script when the URL carries ?sent=1. -->
           <div id="sent-panel" hidden>
