@@ -4,14 +4,19 @@ import Layout from "../layouts/Layout.astro";
 import site from "../data/site.json";
 import pages from "../data/pages.json";
 
-import receptionRoom from "../assets/site/reception.jpg";
 import facialRoom from "../assets/site/room-facial.jpg";
 import facialRoom2 from "../assets/site/room-facial-2.jpg";
+import facialRoom3 from "../assets/site/room-facial-3.jpg";
+import facialRoom4 from "../assets/site/room-facial-4.jpg";
+import facialRoom5 from "../assets/site/room-facial-5.jpg";
+import facialRoom6 from "../assets/site/room-facial-6.jpg";
 import couplesRoom from "../assets/site/room-couples.jpg";
+import massageRoom from "../assets/site/room-massage.jpg";
+import massageRoom2 from "../assets/site/room-massage-2.jpg";
 import bodyRoom from "../assets/site/room-body.jpg";
-import machineDetail from "../assets/site/machine-detail.jpg";
-import storefront from "../assets/site/storefront.jpg";
-import storefrontStreet from "../assets/site/storefront-street.jpg";
+import bodyRoom2 from "../assets/site/room-body-2.jpg";
+import wcRoom from "../assets/site/wc.jpg";
+import wcShower from "../assets/site/wc-shower.jpg";
 
 import tourFacial from "../assets/tour/facial-room.jpg";
 import tourBody from "../assets/tour/body-room.jpg";
@@ -53,8 +58,8 @@ export const prerender = true;
     <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
       <div class="aspect-[4/3]" data-reveal>
         <Image
-          src={receptionRoom}
-          alt="Υποδοχή με λογότυπο La Luce"
+          src={facialRoom3}
+          alt="Κλίνη θεραπειών προσώπου με μηχάνημα Hydrogen Beauty"
           widths={[640, 1024]}
           sizes="(min-width: 768px) 50vw, (min-width: 1024px) 33vw, 100vw"
           quality={80}
@@ -73,26 +78,6 @@ export const prerender = true;
       </div>
       <div class="aspect-[4/3]" data-reveal>
         <Image
-          src={couplesRoom}
-          alt="Χώρος massage για δύο άτομα"
-          widths={[640, 1024]}
-          sizes="(min-width: 1024px) 33vw, 100vw"
-          quality={80}
-          class="h-full w-full object-cover"
-        />
-      </div>
-      <div class="aspect-[4/3]" data-reveal>
-        <Image
-          src={storefrontStreet}
-          alt="Η La Luce Estetica στην οδό Πλατάνου"
-          widths={[640, 1024]}
-          sizes="(min-width: 1024px) 33vw, 100vw"
-          quality={80}
-          class="h-full w-full object-cover"
-        />
-      </div>
-      <div class="aspect-[4/3]" data-reveal>
-        <Image
           src={facialRoom2}
           alt="Αίθουσα προσώπου με βάση προϊόντων"
           widths={[640, 1024]}
@@ -103,8 +88,58 @@ export const prerender = true;
       </div>
       <div class="aspect-[4/3]" data-reveal>
         <Image
-          src={storefront}
-          alt="Είσοδος La Luce Estetica επί της οδού Πλατάνου"
+          src={couplesRoom}
+          alt="Χώρος massage για δύο άτομα"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={massageRoom2}
+          alt="Η αίθουσα massage με δύο κλίνες και κεριά"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={massageRoom}
+          alt="Αίθουσα massage με κεριά"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={facialRoom6}
+          alt="Η αίθουσα προσώπου με τις φωτισμένες εσοχές προϊόντων"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={facialRoom5}
+          alt="Η αίθουσα θεραπειών προσώπου με δύο κλίνες"
+          widths={[640, 1024]}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          quality={80}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="aspect-[4/3]" data-reveal>
+        <Image
+          src={facialRoom4}
+          alt="Προϊόντα Sothys στα φωτισμένα ράφια της αίθουσας προσώπου"
           widths={[640, 1024]}
           sizes="(min-width: 1024px) 33vw, 100vw"
           quality={80}
@@ -196,12 +231,12 @@ export const prerender = true;
         </div>
         <div class="aspect-[4/3]" data-reveal>
           <Image
-            src={machineDetail}
-            alt="Σταθμός ελέγχου μηχανήματος θεραπειών"
+            src={bodyRoom2}
+            alt="Αίθουσα θεραπειών σώματος με μηχανήματα LPG και HIEMS"
             widths={[640, 1024]}
             sizes="(min-width: 1280px) 400px, 100vw"
             quality={80}
-            class="h-full w-full object-cover object-[center_72%]"
+            class="h-full w-full object-cover"
           />
         </div>
       </div>
@@ -222,6 +257,28 @@ export const prerender = true;
           κάθε επίσκεψη και χώροι που αερίζονται συνεχώς. Τα προϊόντα μας
           επιλέγονται από επώνυμους, πιστοποιημένους οίκους.
         </p>
+      </div>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2" data-reveal>
+        <div class="aspect-[3/4]">
+          <Image
+            src={wcRoom}
+            alt="Χώρος υγιεινής με πέτρινο νιπτήρα και φωτισμένο καθρέφτη"
+            widths={[640, 1024]}
+            sizes="(min-width: 640px) 46vw, 100vw"
+            quality={80}
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div class="aspect-[3/4]" data-reveal style="--reveal-delay:120ms">
+          <Image
+            src={wcShower}
+            alt="Χώρος ντους για τους πελάτες μετά τη θεραπεία"
+            widths={[640, 1024]}
+            sizes="(min-width: 640px) 46vw, 100vw"
+            quality={80}
+            class="h-full w-full object-cover"
+          />
+        </div>
       </div>
     </div>
   </section>

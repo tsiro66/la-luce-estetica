@@ -5,13 +5,14 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import site from "../data/site.json";
 import home from "../data/home.json";
-import receptionImage from "../assets/site/reception.jpg";
+import heroPosterImage from "../assets/site/room-massage-2.jpg";
+import studioTeaserImage from "../assets/site/room-facial.jpg";
 
 const { hero, marquee, featured, studioTeaser, booking } = home;
 
 // Poster for the hero video (also preloaded when the video branch is active).
 const heroPoster = await getImage({
-  src: receptionImage,
+  src: heroPosterImage,
   width: 1920,
   format: "webp",
   quality: 80,
@@ -60,7 +61,7 @@ export const prerender = true;
         />
       ) : (
         <Image
-          src={receptionImage}
+          src={heroPosterImage}
           alt="Χώρος περιποίησης La Luce Estetica"
           widths={[768, 1280, 1920, 2400]}
           sizes="100vw"
@@ -286,8 +287,8 @@ export const prerender = true;
                 />
               ) : (
                 <Image
-                  src={receptionImage}
-                  alt="Υποδοχή La Luce Estetica"
+                  src={studioTeaserImage}
+                  alt="Η αίθουσα θεραπειών προσώπου της La Luce Estetica"
                   widths={[768, 1280]}
                   sizes="(min-width: 1280px) 800px, 100vw"
                   quality={80}
