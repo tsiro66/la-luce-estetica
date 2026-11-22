@@ -30,3 +30,11 @@ pnpm-debug.log*
 
 # pi agent state
 .pi/
+
+# local originals — never committed (site uses optimized copies in src/assets / public)
+photos/
+services-raw-vids/
+space-photos/
+
+# local notes / scratch
+subcategories.md

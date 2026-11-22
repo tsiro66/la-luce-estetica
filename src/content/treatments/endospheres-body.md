@@ -7,6 +7,8 @@ duration: "30 λεπτά"
 order: 4
 bestseller: true
 image: "room-body.jpg"
+videos:
+  - "/videos/services/endospheres-body.mp4"
 info:
   pain: "Ευχάριστη αίσθηση μασάζ"
 problems:

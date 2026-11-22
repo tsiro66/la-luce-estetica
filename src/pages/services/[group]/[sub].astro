@@ -60,6 +60,26 @@ const pad = (n: number) => String(n).padStart(2, "0");
         {sub.intro}
       </p>
     </header>
+
+    {
+      sub.video && (
+        <div class="mt-12 flex justify-center bg-ink" data-reveal>
+          <video
+            src={sub.video}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            disablepictureinpicture
+            poster={sub.video.replace(/\.mp4$/, ".webp")}
+            aria-hidden="true"
+            tabindex="-1"
+            class="max-h-[70svh] w-auto max-w-full"
+          ></video>
+        </div>
+      )
+    }
   </section>
 
   <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">

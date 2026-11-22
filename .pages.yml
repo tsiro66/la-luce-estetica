@@ -312,6 +312,11 @@ content:
           - name: intro
             label: Intro line
             type: text
+          - name: video
+            label: Promo video URL
+            type: string
+            required: false
+            description: "Optional mp4 under /videos/services/ (e.g. /videos/services/massage.mp4). Autoplaying muted loop shown under the category header; leave empty for no video."
 
   # ---------- Service subcategories (face, body) ----------
   - name: subcategories
@@ -339,6 +344,11 @@ content:
             label: Treatment IDs
             type: list
             description: "Filenames from src/content/treatments without the .md extension (e.g. deep-cleansing-facial)."
+          - name: video
+            label: Promo video URL
+            type: string
+            required: false
+            description: "Optional mp4 under /videos/services/ (e.g. /videos/services/face-cleansing-detox.mp4). Shown under the subcategory header; portrait videos render contained, not cropped. Leave empty for no video."
       - name: body
         label: Body subcategories
         type: object
@@ -358,6 +368,11 @@ content:
             label: Treatment IDs
             type: list
             description: "Filenames from src/content/treatments without the .md extension (e.g. cavitation). A treatment may appear in multiple subcategories."
+          - name: video
+            label: Promo video URL
+            type: string
+            required: false
+            description: "Optional mp4 under /videos/services/ (e.g. /videos/services/face-cleansing-detox.mp4). Shown under the subcategory header; portrait videos render contained, not cropped. Leave empty for no video."
 
   # ---------- Contact page ----------
   - name: contact

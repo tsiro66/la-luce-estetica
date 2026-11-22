@@ -5,6 +5,8 @@ subtitle: "Ξεκούραστα πόδια και αποβολή τοξινών.
 category: "Σώμα"
 duration: "30 λεπτά"
 order: 8
+videos:
+  - "/videos/services/pressotherapy.mp4"
 
 problems:
   - "Κατακράτηση υγρών, πρηξίματα & φλεβική στάση."

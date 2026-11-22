@@ -33,6 +33,8 @@ const treatments = defineCollection({
       .optional(),
     /** Image filename inside src/assets/site, resolved via import.meta.glob */
     image: z.string().optional(),
+    /** Looping promo videos served from public/videos/services/, e.g. "/videos/services/laser-alexandrite.mp4" */
+    videos: z.array(z.string()).default([]),
   }),
 });
 

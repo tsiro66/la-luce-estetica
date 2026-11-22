@@ -21,38 +21,113 @@ const treatments = category
   : [];
 
 const pad = (n: number) => String(n).padStart(2, "0");
+
+// Video branch (massage today): fullscreen cover video + transparent header,
+// mirroring the homepage hero. Poster is the sibling .webp in public/.
+const heroVideo = category?.video || undefined;
+const heroPoster = heroVideo?.replace(/\.mp4$/, ".webp");
 ---
 
 <Layout
   title={category ? `${category.name} — ${pages.services.title} — ${site.siteName}` : pages.services.title}
   description={category?.intro ?? site.seo.defaultDescription}
+  headerTheme={heroVideo ? "overlay" : "solid"}
 >
-  <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
-    <a
-      href="/services"
-      class="inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
-    >
-      <span aria-hidden="true">&larr;</span> Όλες οι κατηγορίες
-    </a>
+  {
+    heroVideo && (
+      <link rel="preload" as="image" href={heroPoster} fetchpriority="high" />
+    )
+  }
 
-    <header class="mt-10">
-      <p class="eyebrow" data-reveal>{pages.services.title}</p>
-      <h1
-        class="mt-4 font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
-        data-reveal
-        style="--reveal-delay:120ms"
-      >
-        {category?.name}
-      </h1>
-      <p
-        class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
-        data-reveal
-        style="--reveal-delay:220ms"
-      >
-        {category?.intro}
-      </p>
-    </header>
-  </section>
+  {
+    heroVideo ? (
+      <section class="relative flex min-h-[85svh] items-end overflow-hidden bg-ink">
+        <div class="absolute inset-0 animate-hero">
+          <video
+            src={heroVideo}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            disablepictureinpicture
+            poster={heroPoster}
+            aria-hidden="true"
+            tabindex="-1"
+            class="h-full w-full object-cover"
+          ></video>
+        </div>
+        {/* Bottom scrim keeps the copy legible; top vignette keeps the overlay
+            header readable — same pairing as the homepage hero. */}
+        <div
+          class="absolute inset-0 bg-linear-to-t to-transparent from-ink/60 via-ink/15"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          class="absolute inset-0 bg-linear-to-b from-ink/40 to-transparent"
+          aria-hidden="true"
+        >
+        </div>
+
+        <div
+          class="relative mx-auto w-full max-w-7xl px-6 pb-24 pt-40 sm:pb-32 lg:px-8 [text-shadow:0_1px_18px_rgba(28,25,23,0.55),0_0_44px_rgba(28,25,23,0.35)]"
+        >
+          <a
+            href="/services"
+            class="inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-paper/75 transition-colors hover:text-paper"
+          >
+            <span aria-hidden="true">&larr;</span> Όλες οι κατηγορίες
+          </a>
+
+          <header class="mt-10">
+            <p class="eyebrow text-sand" data-reveal>{pages.services.title}</p>
+            <h1
+              class="mt-4 font-display text-5xl font-light leading-[1.02] text-paper sm:text-6xl"
+              data-reveal
+              style="--reveal-delay:120ms"
+            >
+              {category?.name}
+            </h1>
+            <p
+              class="mt-6 max-w-xl font-sans text-base leading-relaxed text-paper/70"
+              data-reveal
+              style="--reveal-delay:220ms"
+            >
+              {category?.intro}
+            </p>
+          </header>
+        </div>
+      </section>
+    ) : (
+      <section class="mx-auto max-w-7xl px-6 pt-24 pb-8 lg:px-8">
+        <a
+          href="/services"
+          class="inline-flex items-center gap-2 font-sans text-[0.7rem] font-medium uppercase tracking-[0.24em] text-ink/50 transition-colors hover:text-champagne"
+        >
+          <span aria-hidden="true">&larr;</span> Όλες οι κατηγορίες
+        </a>
+
+        <header class="mt-10">
+          <p class="eyebrow" data-reveal>{pages.services.title}</p>
+          <h1
+            class="mt-4 font-display text-5xl font-light leading-[1.02] text-ink sm:text-6xl"
+            data-reveal
+            style="--reveal-delay:120ms"
+          >
+            {category?.name}
+          </h1>
+          <p
+            class="mt-6 max-w-xl font-sans text-base leading-relaxed text-ink/70"
+            data-reveal
+            style="--reveal-delay:220ms"
+          >
+            {category?.intro}
+          </p>
+        </header>
+      </section>
+    )
+  }
 
   <section class="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
     <div class="border-b border-ink/15">

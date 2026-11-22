@@ -9,7 +9,8 @@
         "detox-facial",
         "diamond-dermabrasion",
         "hydrofacial"
-      ]
+      ],
+      "video": "/videos/services/face-cleansing-detox.mp4"
     },
     {
       "slug": "hydration",
@@ -18,7 +19,8 @@
       "treatments": [
         "ha3-hyaluronic-boost",
         "oxygen-hyaluronic-shield"
-      ]
+      ],
+      "video": ""
     },
     {
       "slug": "antiaging",
@@ -26,7 +28,8 @@
       "intro": "Στοχευμένη φροντίδα ματιών και σύσφιξη για ξεκούραστο, νεανικό βλέμμα.",
       "treatments": [
         "stress-positive-eye-lift"
-      ]
+      ],
+      "video": ""
     },
     {
       "slug": "specialized",
@@ -40,7 +43,8 @@
         "express-radiance-facial",
         "lpg-endermolift",
         "vita-c-brightening"
-      ]
+      ],
+      "video": ""
     }
   ],
   "body": [
@@ -54,7 +58,8 @@
         "lpg-endermologie-body",
         "mini-vacuum",
         "pressotherapy"
-      ]
+      ],
+      "video": ""
     },
     {
       "slug": "firming",
@@ -64,7 +69,8 @@
         "hiems",
         "lpg-endermologie-body",
         "rf-body"
-      ]
+      ],
+      "video": ""
     },
     {
       "slug": "fat-reduction",
@@ -78,7 +84,8 @@
         "mini-vacuum",
         "rf-body",
         "lymphatic-massage"
-      ]
+      ],
+      "video": ""
     }
   ]
 }
