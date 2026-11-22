@@ -96,6 +96,24 @@ const labelClass =
               </span>
               <span class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">&nearr;</span>
             </a>
+            {
+              site.footer.socials
+                .filter((social) => social.href.includes("instagram.com"))
+                .map((social) => (
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-instagram
+                    class="group flex items-baseline justify-between gap-4 border-b border-ink/15 py-3 transition-colors duration-300 hover:bg-blush"
+                  >
+                    <span class="font-display text-xl font-light text-ink transition-colors group-hover:text-champagne sm:text-2xl">
+                      {social.label}
+                    </span>
+                    <span class="text-champagne opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true">&nearr;</span>
+                  </a>
+                ))
+            }
           </div>
         </div>
 

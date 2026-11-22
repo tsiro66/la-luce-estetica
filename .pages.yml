@@ -94,6 +94,8 @@ content:
               - name: hours
                 type: string
           - name: socials
+            label: Social links
+            description: "Shown in the footer 'Επίσκεψη' column and on the contact page. Instagram links open the Instagram app on mobile and a new tab on desktop."
             type: object
             list: true
             fields:

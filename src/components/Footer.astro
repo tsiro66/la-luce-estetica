@@ -16,15 +16,6 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
       <p class="mt-5 max-w-sm font-sans text-sm leading-relaxed text-ink/60">
         {site.footer.tagline}
       </p>
-      <div class="mt-6 flex gap-6">
-        {
-          site.footer.socials.map((social) => (
-            <a href={social.href} class="footer-link">
-              {social.label}
-            </a>
-          ))
-        }
-      </div>
     </div>
 
     <nav class="md:col-span-2" aria-label="Footer">
@@ -57,6 +48,24 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
         </a>
         <br />
         <a href={phoneHref} class="footer-link">{site.footer.phone}</a>
+        {
+          site.footer.socials
+            .filter((social) => social.href.includes("instagram.com"))
+            .map((social) => (
+              <>
+                <br />
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-instagram
+                  class="footer-link"
+                >
+                  {social.label}
+                </a>
+              </>
+            ))
+        }
       </address>
     </div>
 
@@ -142,6 +151,40 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     document.addEventListener("astro:page-load", init);
     document.addEventListener("astro:before-swap", () => observer?.disconnect());
     init();
+  }
+</script>
+
+<script>
+  // Instagram links: on touch devices open the app instead of the browser.
+  // Intercepts clicks on a[data-instagram], fires the instagram:// deep link
+  // and falls back to the web profile if the page is still visible 1.5s later
+  // (app not installed). Desktop keeps the native target="_blank" tab.
+  // Delegated on document + guarded, so it survives ClientRouter swaps.
+  if (!(window as any).__igDeepLinkInit) {
+    (window as any).__igDeepLinkInit = true;
+    document.addEventListener("click", (e) => {
+      const a = (e.target as Element | null)?.closest?.("a[data-instagram]");
+      if (!a) return;
+      if (!window.matchMedia("(pointer: coarse)").matches) return;
+      e.preventDefault();
+      const web = a.getAttribute("href") || a.href;
+      const user = new URL(a.href).pathname.split("/").filter(Boolean)[0];
+      if (!user) {
+        window.location.href = web;
+        return;
+      }
+      let leftPage = false;
+      const onHide = () => {
+        leftPage = true;
+      };
+      window.addEventListener("pagehide", onHide, { once: true });
+      document.addEventListener("visibilitychange", onHide, { once: true });
+      window.addEventListener("blur", onHide, { once: true });
+      setTimeout(() => {
+        if (!leftPage && !document.hidden) window.location.href = web;
+      }, 1500);
+      window.location.href = `instagram://user?username=${encodeURIComponent(user)}`;
+    });
   }
 </script>
 
