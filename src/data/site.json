@@ -49,6 +49,10 @@
     ],
     "mapUrl": "https://share.google/dImrOYCO7TXdqtlYb",
     "mapLabel": "Οδηγίες πρόσβασης",
+    "map": {
+      "embedUrl": "https://maps.google.com/maps?q=La%20Luce%20Estetica%20%26%20Skin%20Clinic%20%CE%A7%CE%B1%CE%BB%CE%AC%CE%BD%CE%B4%CF%81%CE%AF&output=embed&hl=el",
+      "title": "Χάρτης — La Luce Estetica, Πλατάνου 20, Χαλάνδρι"
+    },
     "address": {
       "street": "Πλατάνου 20",
       "city": "Χαλάνδρι 152 34"
@@ -70,6 +74,7 @@
       }
     ],
     "bookLabel": "Κλείστε online μέσω Treatwell",
-    "copyright": "La Luce Estetica"
+    "copyright": "La Luce Estetica",
+    "note": ""
   }
 }

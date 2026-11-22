@@ -83,16 +83,18 @@ const phoneHref = `tel:${site.footer.phone.replace(/[^+\d]/g, "")}`;
     </div>
   </div>
 
-  <div class="border-t border-ink/10">
-    <iframe
-      src={site.footer.map.embedUrl}
-      title={site.footer.map.title}
-      class="block h-64 w-full grayscale-[0.85] transition-[filter] duration-500 hover:grayscale-0 sm:h-72 lg:h-80"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen
-    ></iframe>
-  </div>
+  {site.footer.map && (
+    <div class="border-t border-ink/10">
+      <iframe
+        src={site.footer.map.embedUrl}
+        title={site.footer.map.title}
+        class="block h-64 w-full grayscale-[0.85] transition-[filter] duration-500 hover:grayscale-0 sm:h-72 lg:h-80"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+  )}
 
   <div class="border-t border-ink/10">
     <div
